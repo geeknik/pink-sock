@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Secure IFrame Implementation - Pink Sock Test</title>
+    <link rel="stylesheet" href="../assets/style.css">
+    <!-- Secure Content Security Policy -->
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; frame-src 'self'; frame-ancestors 'self'; object-src 'none';">
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <img src="../assets/logo.svg" alt="Pink Sock Logo">
+            <h1>Secure IFrame Implementation</h1>
+        </div>
+        <div class="severity" style="background-color: #4CAF50; color: white;">Secure</div>
+    </header>
+    
+    <main>
+        <p class="description">
+            This page demonstrates a secure implementation of iframes with all recommended security features to minimize vulnerabilities.
+            Pink Sock should not detect any security issues with this implementation.
+        </p>
+        
+        <div class="explanation" style="background-color: #e6f7ed;">
+            <strong>Security Features:</strong> This page implements proper iframe sandboxing, content security policy, and cross-origin protections.
+        </div>
+        
+        <h2>Secure Example</h2>
+        
+        <div class="test-container">
+            <div class="code-label">Secure code:</div>
+            <pre><code>&lt;iframe 
+  src="../assets/iframe-content.html" 
+  sandbox="allow-scripts allow-forms allow-same-origin allow-popups-to-escape-sandbox"
+  allow="camera=(), microphone=()"
+  loading="lazy"
+  referrerpolicy="no-referrer"
+  title="Securely sandboxed iframe content"
+  width="100%"
+  height="300"
+&gt;&lt;/iframe&gt;</code></pre>
+            
+            <div class="iframe-container">
+                <iframe 
+                    src="../assets/iframe-content.html" 
+                    sandbox="allow-scripts allow-forms allow-popups-to-escape-sandbox"
+                    allow="camera=(), microphone=()"
+                    loading="lazy"
+                    referrerpolicy="no-referrer"
+                    title="Securely sandboxed iframe content"
+                    width="100%"
+                    height="300"
+                ></iframe>
+            </div>
+        </div>
+        
+        <h2>Security Features Explained</h2>
+        
+        <div class="test-detail">
+            <h3>Sandbox Attribute</h3>
+            <p>The sandbox attribute is properly configured with the minimum necessary permissions:</p>
+            <ul>
+                <li><code>allow-scripts</code> - Permits JavaScript execution within the iframe</li>
+                <li><code>allow-forms</code> - Allows form submission within the iframe</li>
+                <li><code>allow-popups-to-escape-sandbox</code> - Allows popups but ensures they're not sandboxed</li>
+            </ul>
+            <p>Notably absent is <code>allow-same-origin</code> (which would defeat sandbox protections when combined with allow-scripts) and <code>allow-top-navigation</code> (which could enable clickjacking).</p>
+            
+            <h3>Additional Security Attributes</h3>
+            <ul>
+                <li><code>allow="camera=(), microphone=()"</code> - Explicitly blocks access to camera and microphone</li>
+                <li><code>loading="lazy"</code> - Improves performance and reduces resource usage</li>
+                <li><code>referrerpolicy="no-referrer"</code> - Prevents leaking referrer information</li>
+                <li><code>title</code> - Provides accessibility and helps document the iframe's purpose</li>
+            </ul>
+            
+            <h3>Content Security Policy</h3>
+            <p>The page includes a strong Content Security Policy that:</p>
+            <ul>
+                <li>Restricts resources to the same origin with <code>default-src 'self'</code></li>
+                <li>Controls which frames can be embedded with <code>frame-src 'self'</code></li>
+                <li>Prevents clickjacking with <code>frame-ancestors 'self'</code></li>
+                <li>Blocks object embedding with <code>object-src 'none'</code></li>
+            </ul>
+        </div>
+        
+        <h2>Best Practices for Secure IFrames</h2>
+        
+        <div class="test-detail">
+            <h3>Security Checklist</h3>
+            <ol>
+                <li>Always use the sandbox attribute with the principle of least privilege</li>
+                <li>Never combine <code>allow-scripts</code> with <code>allow-same-origin</code></li>
+                <li>Include a strong Content Security Policy</li>
+                <li>Use <code>referrerpolicy</code> to control information leakage</li>
+                <li>Explicitly control permissions with the <code>allow</code> attribute</li>
+                <li>Only load content from trusted sources</li>
+                <li>Consider <code>srcdoc</code> for static content instead of external URLs</li>
+                <li>Add <code>title</code> attribute for accessibility</li>
+                <li>Use <code>loading="lazy"</code> for performance benefits</li>
+            </ol>
+            
+            <h3>Additional Protection Layers</h3>
+            <p>For critical applications, consider adding:</p>
+            <ul>
+                <li>Subresource Integrity (SRI) checks for loaded resources</li>
+                <li>Cross-Origin Resource Sharing (CORS) headers</li>
+                <li>Cross-Origin Resource Policy (CORP) headers</li>
+                <li>Cross-Origin Opener Policy (COOP) headers</li>
+                <li>Cross-Origin Embedder Policy (COEP) headers</li>
+            </ul>
+        </div>
+    </main>
+    
+    <div class="nav">
+        <a href="../index.html">Back to Test Index</a>
+        <a href="secure-csp.html">Next: Secure CSP Implementation</a>
+    </div>
+    
+    <footer>
+        <p>Pink Sock - IFrame Security Analyzer for Brave Browser</p>
+    </footer>
+</body>
+</html>

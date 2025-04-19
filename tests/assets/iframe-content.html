@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IFrame Content</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            text-align: center;
+            background-color: #f0f0f0;
+        }
+        
+        h1 {
+            color: #FF69B4;
+        }
+        
+        .container {
+            margin-top: 20px;
+        }
+        
+        button {
+            background-color: #FF69B4;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 10px;
+        }
+        
+        button:hover {
+            background-color: #D6568F;
+        }
+    </style>
+</head>
+<body>
+    <h1>IFrame Content</h1>
+    <p>This is content loaded inside an iframe for testing purposes.</p>
+    
+    <div class="container">
+        <button id="alertBtn">Show Alert</button>
+        <button id="navigateBtn">Try Navigation</button>
+        <button id="cookieBtn">Set Cookie</button>
+    </div>
+    
+    <script>
+        // Add event listeners to buttons
+        document.getElementById('alertBtn').addEventListener('click', function() {
+            alert('Alert from iframe content!');
+        });
+        
+        document.getElementById('navigateBtn').addEventListener('click', function() {
+            try {
+                top.location.href = 'https://example.com';
+                console.log('Navigation attempted');
+            } catch (e) {
+                console.error('Navigation blocked:', e);
+                alert('Navigation blocked by sandbox!');
+            }
+        });
+        
+        document.getElementById('cookieBtn').addEventListener('click', function() {
+            try {
+                document.cookie = "testCookie=value; path=/";
+                console.log('Cookie set attempt');
+                alert('Cookie set attempt: ' + document.cookie);
+            } catch (e) {
+                console.error('Cookie blocked:', e);
+                alert('Cookie blocked by sandbox!');
+            }
+        });
+        
+        // Log information about the context
+        console.log('IFrame Origin:', window.location.origin);
+        console.log('Parent Origin:', (window.parent === window) ? 'No parent' : 'Has parent');
+        
+        // Try to access parent (will be blocked if sandboxed properly)
+        try {
+            console.log('Parent document access:', window.parent.document.domain);
+        } catch (e) {
+            console.log('Access to parent blocked by sandbox');
+        }
+    </script>
+</body>
+</html>

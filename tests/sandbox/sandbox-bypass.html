@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sandbox Bypass - Pink Sock Test</title>
+    <link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <img src="../assets/logo.svg" alt="Pink Sock Logo">
+            <h1>Sandbox Bypass</h1>
+        </div>
+        <div class="severity high">High</div>
+    </header>
+    
+    <main>
+        <p class="description">
+            This test page demonstrates a critical security vulnerability where an iframe's sandbox protection is effectively bypassed
+            by combining the <code>allow-scripts</code> and <code>allow-same-origin</code> values.
+        </p>
+        
+        <div class="vulnerability">
+            <strong>Security Issue:</strong> Combining <code>allow-scripts</code> and <code>allow-same-origin</code> in a sandbox attribute completely negates the security benefits of sandboxing, as scripts can access the parent context.
+        </div>
+        
+        <h2>Test Case</h2>
+        
+        <div class="test-container">
+            <div class="code-label">Vulnerable code:</div>
+            <pre><code>&lt;iframe 
+  src="../assets/iframe-content.html" 
+  sandbox="allow-scripts allow-same-origin"
+&gt;&lt;/iframe&gt;</code></pre>
+            
+            <div class="iframe-container">
+                <iframe src="../assets/iframe-content.html" sandbox="allow-scripts allow-same-origin"></iframe>
+            </div>
+        </div>
+        
+        <h2>Explanation</h2>
+        
+        <div class="explanation">
+            <p>The combination of <code>allow-scripts</code> and <code>allow-same-origin</code> in a sandbox attribute creates a dangerous security vulnerability:</p>
+            
+            <ul>
+                <li><code>allow-scripts</code> enables JavaScript execution within the iframe</li>
+                <li><code>allow-same-origin</code> lets the iframe maintain its origin, preserving access to cookies, localStorage, and other origin-specific resources</li>
+                <li>When combined, scripts in the iframe can access everything that belongs to its origin, including parent window content if they share the same origin</li>
+            </ul>
+            
+            <p>This effectively negates the security benefits of the sandbox attribute, as malicious code in the iframe can potentially:</p>
+            
+            <ul>
+                <li>Read or modify parent page content</li>
+                <li>Access cookies and local storage</li>
+                <li>Hijack user sessions</li>
+                <li>Conduct cross-site scripting (XSS) attacks</li>
+            </ul>
+            
+            <h3>How Pink Sock detects this issue:</h3>
+            <p>Pink Sock analyzes the sandbox attribute on iframe elements and specifically looks for the combination of <code>allow-scripts</code> and <code>allow-same-origin</code>, flagging it as a high-severity security vulnerability.</p>
+            
+            <h3>How to fix:</h3>
+            <p>Never combine <code>allow-scripts</code> and <code>allow-same-origin</code> in a sandbox attribute. Instead:</p>
+            
+            <pre><code>&lt;iframe 
+  src="../assets/iframe-content.html" 
+  sandbox="allow-scripts allow-forms"
+&gt;&lt;/iframe&gt;</code></pre>
+            
+            <p>If you need script execution but not same-origin privileges, use <code>allow-scripts</code> without <code>allow-same-origin</code>. If you absolutely need same-origin access, consider alternative security measures such as Content Security Policy (CSP) and proper input validation.</p>
+        </div>
+        
+        <h2>Additional Information</h2>
+        
+        <div class="test-detail">
+            <h3>Security Impact</h3>
+            <p>According to the HTML specification, combining these two values creates a significant security risk. The Mozilla Developer Network (MDN) documentation explicitly warns:</p>
+            
+            <blockquote>
+                "Allowing both scripts and same-origin access disables the sandbox protection entirely for that iframe."
+            </blockquote>
+            
+            <h3>Alternative Approaches</h3>
+            <p>If you need to load content from the same origin with script execution, consider:</p>
+            
+            <ul>
+                <li>Using a more restrictive Content Security Policy</li>
+                <li>Using <code>iframe-src</code> or <code>worker-src</code> CSP directives to control what can be loaded</li>
+                <li>Implementing proper input validation and output encoding</li>
+                <li>Using cross-document messaging (postMessage) for communication between frames</li>
+            </ul>
+        </div>
+    </main>
+    
+    <div class="nav">
+        <a href="missing-sandbox.html">Previous Test</a>
+        <a href="risky-navigation.html">Next Test: Risky Navigation</a>
+    </div>
+    
+    <footer>
+        <p>Pink Sock - IFrame Security Analyzer for Brave Browser</p>
+    </footer>
+</body>
+</html>

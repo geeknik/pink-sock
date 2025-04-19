@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512">
+  <!-- Background Circle -->
+  <rect x="0" y="0" width="512" height="512" rx="128" ry="128" fill="#FFFFFF" stroke="#FF69B4" stroke-width="24"/>
+  
+  <!-- Pink Sock Icon -->
+  <path d="M256 128 
+           C200 128 180 148 180 188 
+           V288 
+           C180 368 220 400 256 400 
+           C292 400 332 368 332 288 
+           V188 
+           C332 148 312 128 256 128z" 
+        fill="#FFFFFF" stroke="#FF69B4" stroke-width="24" stroke-linejoin="round"/>
+  
+  <!-- Sock Ribbing -->
+  <path d="M180 188 H332" stroke="#FF69B4" stroke-width="24" stroke-linecap="round"/>
+  
+  <!-- Sock Heel -->
+  <path d="M180 288 
+           C180 288 200 328 256 328 
+           C312 328 332 288 332 288" 
+        stroke="#FF69B4" stroke-width="24" stroke-linecap="round" fill="none"/>
+</svg>

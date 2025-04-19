@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Missing frame-ancestors Directive - Pink Sock Test</title>
+    <link rel="stylesheet" href="../assets/style.css">
+    <!-- CSP without frame-ancestors directive -->
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self';">
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <img src="../assets/logo.svg" alt="Pink Sock Logo">
+            <h1>Missing frame-ancestors Directive</h1>
+        </div>
+        <div class="severity medium">Medium</div>
+    </header>
+    
+    <main>
+        <p class="description">
+            This test page demonstrates a security vulnerability where a Content Security Policy (CSP) is implemented, 
+            but lacks the crucial <code>frame-ancestors</code> directive, which protects against clickjacking attacks.
+        </p>
+        
+        <div class="vulnerability">
+            <strong>Security Issue:</strong> Content Security Policy is missing the <code>frame-ancestors</code> directive, leaving the page vulnerable to clickjacking attacks where it could be embedded in malicious websites.
+        </div>
+        
+        <h2>Test Case</h2>
+        
+        <div class="test-container">
+            <div class="code-label">Vulnerable code:</div>
+            <pre><code>&lt;meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self';"&gt;</code></pre>
+            
+            <p>This CSP controls script and style sources, but doesn't restrict who can embed this page in an iframe.</p>
+            
+            <div class="iframe-container">
+                <iframe src="missing-frame-ancestors-demo.html" width="100%" height="200"></iframe>
+            </div>
+        </div>
+        
+        <h2>Explanation</h2>
+        
+        <div class="explanation">
+            <p>The <code>frame-ancestors</code> directive in Content Security Policy controls which parent pages can embed the current page in a frame, iframe, object, embed, or applet. Without this directive, any website can potentially embed your page.</p>
+            
+            <p>This creates vulnerability to clickjacking attacks where malicious sites can:</p>
+            
+            <ul>
+                <li>Overlay transparent iframes over seemingly innocent content</li>
+                <li>Trick users into clicking elements they didn't intend to interact with</li>
+                <li>Capture sensitive information or perform actions without user awareness</li>
+                <li>Potentially bypass other security measures through UI redressing</li>
+            </ul>
+            
+            <h3>How Pink Sock detects this issue:</h3>
+            <p>Pink Sock analyzes CSP headers and meta tags for the presence of the <code>frame-ancestors</code> directive. When a CSP exists but lacks this directive, it flags it as a medium-severity security issue.</p>
+            
+            <h3>How to fix:</h3>
+            <p>Add the <code>frame-ancestors</code> directive to your Content Security Policy:</p>
+            
+            <pre><code>&lt;meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; frame-ancestors 'self';"&gt;</code></pre>
+            
+            <p>For most applications, setting <code>frame-ancestors 'self'</code> is appropriate, allowing only your own site to embed the page. For maximum security, you can use <code>frame-ancestors 'none'</code> to prevent any embedding.</p>
+            
+            <p>For more specific control, you can list allowed domains:</p>
+            
+            <pre><code>frame-ancestors 'self' https://trusted-partner.example.com</code></pre>
+        </div>
+        
+        <h2>Additional Information</h2>
+        
+        <div class="test-detail">
+            <h3>Legacy X-Frame-Options Header</h3>
+            <p>Before CSP was widely supported, the <code>X-Frame-Options</code> header was used to prevent clickjacking:</p>
+            
+            <pre><code>X-Frame-Options: DENY</code></pre>
+            <p>or</p>
+            <pre><code>X-Frame-Options: SAMEORIGIN</code></pre>
+            
+            <p>While this header is still useful for backward compatibility, <code>frame-ancestors</code> provides more flexibility and should be used in modern applications.</p>
+            
+            <h3>Clickjacking Example</h3>
+            <p>In a clickjacking attack, a malicious site might create this type of structure:</p>
+            
+            <pre><code>&lt;div style="position:relative;"&gt;
+  &lt;div style="opacity:0.5; position:absolute; top:0; left:0; width:100%; height:100%;"&gt;
+    Click here to win a prize!
+  &lt;/div&gt;
+  &lt;iframe src="https://your-site.com/sensitive-action" style="opacity:0.1;"&gt;&lt;/iframe&gt;
+&lt;/div&gt;</code></pre>
+            
+            <p>The user sees the "Click here" text but actually clicks on a button in your application, potentially performing an unintended action like a purchase or data deletion.</p>
+        </div>
+    </main>
+    
+    <div class="nav">
+        <a href="../index.html">Back to Test Index</a>
+        <a href="missing-csp.html">Next Test: Missing CSP</a>
+    </div>
+    
+    <footer>
+        <p>Pink Sock - IFrame Security Analyzer for Brave Browser</p>
+    </footer>
+</body>
+</html>

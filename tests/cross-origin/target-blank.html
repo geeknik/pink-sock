@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Target Blank Links - Pink Sock Test</title>
+    <link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <img src="../assets/logo.svg" alt="Pink Sock Logo">
+            <h1>Target Blank Links without Noopener</h1>
+        </div>
+        <div class="severity low">Low</div>
+    </header>
+    
+    <main>
+        <p class="description">
+            This test page demonstrates a security vulnerability where links with <code>target="_blank"</code> don't include <code>rel="noopener noreferrer"</code>,
+            which can allow the linked page to access the opener window through the <code>window.opener</code> object.
+        </p>
+        
+        <div class="vulnerability">
+            <strong>Security Issue:</strong> Links with <code>target="_blank"</code> but without <code>rel="noopener noreferrer"</code> 
+            can expose your site to performance and security issues as the opened page can access the opener window.
+        </div>
+        
+        <h2>Test Case</h2>
+        
+        <div class="test-container">
+            <div class="code-label">Vulnerable code:</div>
+            <pre><code>&lt;a href="https://example.com" target="_blank"&gt;Visit Example Site&lt;/a&gt;</code></pre>
+            
+            <div style="margin: 20px 0;">
+                <a href="https://example.com" target="_blank">Visit Example Site (Vulnerable Link)</a>
+                <br><br>
+                <a href="https://example.com" target="_blank" rel="noopener noreferrer">Visit Example Site (Secure Link with noopener)</a>
+            </div>
+        </div>
+        
+        <h2>Explanation</h2>
+        
+        <div class="explanation">
+            <p>When you create a link with <code>target="_blank"</code>, the new page gains access to the original page through the <code>window.opener</code> object. This creates two potential issues:</p>
+            
+            <ol>
+                <li><strong>Security Vulnerability:</strong> The opened page can potentially redirect the opener page to a phishing site using <code>window.opener.location = maliciousUrl</code></li>
+                <li><strong>Performance Issue:</strong> The opened page runs in the same process as the opener page, which can slow down the original page if the new one is resource-intensive</li>
+            </ol>
+            
+            <p>This is especially concerning for links to third-party or untrusted websites that might be malicious.</p>
+            
+            <h3>How Pink Sock detects this issue:</h3>
+            <p>Pink Sock scans for all <code>&lt;a&gt;</code> elements with <code>target="_blank"</code> and checks if they include the <code>rel="noopener"</code> or <code>rel="noreferrer"</code> attributes, especially for cross-origin links.</p>
+            
+            <h3>How to fix:</h3>
+            <p>Always add <code>rel="noopener noreferrer"</code> to links that open in a new tab or window:</p>
+            
+            <pre><code>&lt;a href="https://example.com" target="_blank" rel="noopener noreferrer"&gt;Visit Example Site&lt;/a&gt;</code></pre>
+            
+            <p>This prevents the opened page from accessing the <code>window.opener</code> object and redirecting the original page.</p>
+        </div>
+        
+        <h2>Additional Information</h2>
+        
+        <div class="test-detail">
+            <h3>Attribute Explanation</h3>
+            <ul>
+                <li><strong>noopener:</strong> Prevents the new page from being able to access the <code>window.opener</code> property and ensures it runs in a separate process</li>
+                <li><strong>noreferrer:</strong> Prevents the Referer header from being sent to the new page and also implies <code>noopener</code></li>
+            </ul>
+            
+            <h3>Browser Compatibility</h3>
+            <p>In most modern browsers, <code>target="_blank"</code> automatically implies <code>rel="noopener"</code>, but this behavior is not universal across all browsers and versions. Therefore, it's still best practice to explicitly include <code>rel="noopener"</code> or <code>rel="noreferrer"</code> for maximum compatibility and security.</p>
+            
+            <h3>Demonstration</h3>
+            <p>You can test this vulnerability with the following code in the linked page:</p>
+            
+            <pre><code>if (window.opener) {
+  console.log("I can access the opener window!");
+  // Potentially harmful: window.opener.location = "https://malicious-site.example";
+} else {
+  console.log("The opener window is protected.");
+}</code></pre>
+        </div>
+    </main>
+    
+    <div class="nav">
+        <a href="../index.html">Back to Test Index</a>
+        <a href="missing-crossorigin.html">Next Test: Missing Crossorigin</a>
+    </div>
+    
+    <footer>
+        <p>Pink Sock - IFrame Security Analyzer for Brave Browser</p>
+    </footer>
+</body>
+</html>

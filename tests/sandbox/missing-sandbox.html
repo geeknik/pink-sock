@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Missing Sandbox Attribute - Pink Sock Test</title>
+    <link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <img src="../assets/logo.svg" alt="Pink Sock Logo">
+            <h1>Missing Sandbox Attribute</h1>
+        </div>
+        <div class="severity high">High</div>
+    </header>
+    
+    <main>
+        <p class="description">
+            This test page demonstrates a security vulnerability where an iframe is included without a sandbox attribute.
+            An unsandboxed iframe has the same permissions as the parent page, which can lead to significant security risks.
+        </p>
+        
+        <div class="vulnerability">
+            <strong>Security Issue:</strong> IFrame without sandbox attribute has full access to parent page context, enabling potential cross-site scripting (XSS) attacks, clickjacking, and other security vulnerabilities.
+        </div>
+        
+        <h2>Test Case</h2>
+        
+        <div class="test-container">
+            <div class="code-label">Vulnerable code:</div>
+            <pre><code>&lt;iframe src="../assets/iframe-content.html"&gt;&lt;/iframe&gt;</code></pre>
+            
+            <div class="iframe-container">
+                <iframe src="../assets/iframe-content.html"></iframe>
+            </div>
+        </div>
+        
+        <h2>Explanation</h2>
+        
+        <div class="explanation">
+            <p>When an iframe does not have a sandbox attribute, it inherits the same permissions as the parent page. This means:</p>
+            
+            <ul>
+                <li>Scripts in the iframe can access the parent window's DOM through window.parent</li>
+                <li>The iframe can navigate the top-level window without user interaction</li>
+                <li>Forms within the iframe can submit to any target</li>
+                <li>The iframe can execute scripts, create popups, and access cookies</li>
+            </ul>
+            
+            <p>These capabilities significantly increase the attack surface of your website, especially when loading third-party or user-generated content in iframes.</p>
+            
+            <h3>How Pink Sock detects this issue:</h3>
+            <p>Pink Sock scans the DOM for iframe elements and checks if they have a sandbox attribute. When an iframe is found without this attribute, it flags it as a high-severity security issue.</p>
+            
+            <h3>How to fix:</h3>
+            <p>Always add a sandbox attribute to iframes, granting only the minimum permissions needed:</p>
+            
+            <pre><code>&lt;iframe 
+  src="../assets/iframe-content.html" 
+  sandbox="allow-scripts allow-forms"
+&gt;&lt;/iframe&gt;</code></pre>
+            
+            <p>This provides a reasonable level of protection while still allowing scripts and forms to function. Only add additional permissions if specifically needed for functionality.</p>
+        </div>
+        
+        <h2>Additional Information</h2>
+        
+        <div class="test-detail">
+            <h3>Sandbox Attribute Values</h3>
+            <p>The sandbox attribute can take multiple values to allow specific capabilities:</p>
+            
+            <table>
+                <tr>
+                    <th>Value</th>
+                    <th>Description</th>
+                    <th>Security Risk</th>
+                </tr>
+                <tr>
+                    <td>allow-forms</td>
+                    <td>Allows form submission</td>
+                    <td>Low</td>
+                </tr>
+                <tr>
+                    <td>allow-scripts</td>
+                    <td>Allows JavaScript execution</td>
+                    <td>Medium</td>
+                </tr>
+                <tr>
+                    <td>allow-same-origin</td>
+                    <td>Allows same-origin access</td>
+                    <td>Medium</td>
+                </tr>
+                <tr>
+                    <td>allow-top-navigation</td>
+                    <td>Allows navigation of the top-level window</td>
+                    <td>High</td>
+                </tr>
+                <tr>
+                    <td>allow-popups</td>
+                    <td>Allows popups from the iframe</td>
+                    <td>Medium</td>
+                </tr>
+                <tr>
+                    <td>allow-storage-access-by-user-activation</td>
+                    <td>Allows access to storage with user activation</td>
+                    <td>Low</td>
+                </tr>
+            </table>
+            
+            <p><strong>Note:</strong> Combining <code class="code-inline">allow-scripts</code> and <code class="code-inline">allow-same-origin</code> can completely bypass the sandbox protection, which is another security vulnerability that Pink Sock detects.</p>
+        </div>
+    </main>
+    
+    <div class="nav">
+        <a href="../index.html">Back to Test Index</a>
+        <a href="sandbox-bypass.html">Next Test: Sandbox Bypass</a>
+    </div>
+    
+    <footer>
+        <p>Pink Sock - IFrame Security Analyzer for Brave Browser</p>
+    </footer>
+</body>
+</html>
