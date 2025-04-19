@@ -38,7 +38,7 @@
             <div class="iframe-container">
                 <iframe 
                     src="../assets/iframe-content.html" 
-                    sandbox="allow-scripts allow-forms"
+                    sandbox="allow-scripts"
                     width="100%" 
                     height="200">
                 </iframe>
@@ -89,6 +89,16 @@
                     <td>Only allows forms to submit to the same origin, preventing cross-site data leakage</td>
                 </tr>
             </table>
+            
+            <h3>Iframe Sandbox Security</h3>
+            <p>The iframe in this example includes the minimal sandboxing needed:</p>
+            <ul>
+                <li><code>sandbox="allow-scripts"</code> - Permits JavaScript execution while maintaining other security restrictions</li>
+                <li>Omits <code>allow-forms</code> to prevent the risky combination with <code>allow-scripts</code></li>
+                <li>Omits <code>allow-same-origin</code> which would defeat sandbox protections when combined with scripts</li>
+                <li>Omits <code>allow-top-navigation</code> to prevent navigation-based attacks</li>
+            </ul>
+            <p>This configuration applies the principle of least privilege to iframe permissions.</p>
             
             <h3>CSP Violation Reporting</h3>
             <p>The policy includes a <code>report-uri</code> directive, which sends violation reports to a specified endpoint. This provides valuable information about potential attacks and unintended CSP violations for continuous security improvement.</p>
