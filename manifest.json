@@ -44,9 +44,8 @@
   "web_accessible_resources": [
     {
       "resources": [
-        "assets/icons/*",
-        "src/devtools/*",
-        "src/*"
+        "assets/**/*",
+        "src/**/*"
       ],
       "matches": ["<all_urls>"]
     }

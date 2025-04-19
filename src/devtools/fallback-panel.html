@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pink Sock - Fallback Panel</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+      color: #333;
+    }
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      background: #fff;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+    h1 {
+      color: #FF69B4;
+      margin-top: 0;
+    }
+    .notice {
+      background: #FFF0F5;
+      padding: 15px;
+      border-left: 4px solid #FF69B4;
+      margin-bottom: 20px;
+    }
+    .step {
+      margin-bottom: 15px;
+      padding-bottom: 15px;
+      border-bottom: 1px solid #eee;
+    }
+    .step-number {
+      display: inline-block;
+      width: 25px;
+      height: 25px;
+      background: #FF69B4;
+      color: white;
+      text-align: center;
+      border-radius: 50%;
+      margin-right: 10px;
+    }
+    code {
+      background: #f5f5f5;
+      padding: 2px 5px;
+      border-radius: 3px;
+      font-family: monospace;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Pink Sock Security Analyzer</h1>
+    
+    <div class="notice">
+      This is a fallback panel that appears when the main panel cannot be loaded. Please follow the troubleshooting steps below.
+    </div>
+    
+    <h2>Troubleshooting Steps</h2>
+    
+    <div class="step">
+      <span class="step-number">1</span>
+      <strong>Reload the extension</strong>
+      <p>Go to <code>brave://extensions/</code>, find Pink Sock, and click the reload icon.</p>
+    </div>
+    
+    <div class="step">
+      <span class="step-number">2</span>
+      <strong>Check the console for errors</strong>
+      <p>Open DevTools for this panel by right-clicking and selecting "Inspect" to check for specific errors.</p>
+    </div>
+    
+    <div class="step">
+      <span class="step-number">3</span>
+      <strong>Verify the extension is working</strong>
+      <p>Click the Pink Sock icon in the toolbar to see if the popup appears correctly.</p>
+    </div>
+    
+    <div class="step">
+      <span class="step-number">4</span>
+      <strong>Try in a fresh browser profile</strong>
+      <p>Sometimes browser extensions can conflict. Try loading the extension in a new browser profile.</p>
+    </div>
+    
+    <div class="step">
+      <span class="step-number">5</span>
+      <strong>Refer to documentation</strong>
+      <p>Check the TROUBLESHOOTING.md file in the extension directory for more specific guidance.</p>
+    </div>
+  </div>
+  
+  <script>
+    console.log("Pink Sock fallback panel loaded");
+    // Simple initialization to verify the panel is working
+    document.addEventListener('DOMContentLoaded', () => {
+      console.log("Fallback panel DOM loaded");
+    });
+  </script>
+</body>
+</html>

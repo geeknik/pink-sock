@@ -4,111 +4,61 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Pink Sock - Detailed Analysis</title>
-  <link rel="stylesheet" href="/src/devtools/panel.css">
-  <script type="text/javascript">
-    // Dynamically set the base URL for resources
-    document.write('<base href="' + chrome.runtime.getURL('/') + '">');
-  </script>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 20px;
+      color: #333;
+    }
+    header {
+      background-color: #FF69B4;
+      color: white;
+      padding: 15px;
+      margin: -20px -20px 20px -20px;
+      display: flex;
+      align-items: center;
+    }
+    header h1 {
+      margin: 0 0 0 10px;
+      font-size: 20px;
+    }
+    .logo img {
+      width: 24px;
+      height: 24px;
+    }
+    .loading {
+      text-align: center;
+      padding: 50px;
+      font-size: 16px;
+      color: #666;
+    }
+  </style>
 </head>
 <body>
   <header>
     <div class="logo">
       <img src="/assets/icons/icon48.png" alt="Pink Sock Logo">
-      <h1>Pink Sock</h1>
     </div>
-    <div class="subtitle">IFrame Security Analyzer - Detailed Report</div>
+    <h1>Pink Sock Security Analyzer</h1>
   </header>
+  
+  <div class="loading">
+    Loading security analysis...
+    <p>If this message persists, there might be an issue with the extension. Check the console for errors.</p>
+  </div>
 
-  <div class="toolbar">
-    <div class="filters">
-      <label>Filter by severity:</label>
-      <select id="severity-filter">
-        <option value="all">All Severities</option>
-        <option value="critical">Critical</option>
-        <option value="high">High</option>
-        <option value="medium">Medium</option>
-        <option value="low">Low</option>
-        <option value="info">Info</option>
-      </select>
-      
-      <label>Filter by type:</label>
-      <select id="type-filter">
-        <option value="all">All Types</option>
-        <option value="iframe">IFrame Issues</option>
-        <option value="csp">CSP Issues</option>
-        <option value="header">Security Headers</option>
-        <option value="link">Link Issues</option>
-      </select>
-    </div>
+  <script>
+    console.log("Pink Sock panel loaded");
     
-    <div class="actions">
-      <button id="export-btn">Export Report</button>
-      <button id="refresh-btn">Refresh</button>
-    </div>
-  </div>
-  
-  <div class="main-content">
-    <div class="summary-panel">
-      <h2>Security Summary</h2>
-      <div class="summary-stats">
-        <div class="stat-group">
-          <div class="stat-item">
-            <span class="stat-label">Total Issues</span>
-            <span class="stat-value" id="total-count">0</span>
-          </div>
-          <div class="stat-chart" id="severity-chart">
-            <!-- Chart will be rendered here -->
-          </div>
-        </div>
-        
-        <div class="stat-group">
-          <div class="stat-item">
-            <span class="stat-label">Critical</span>
-            <span class="stat-value severity-critical" id="critical-count">0</span>
-          </div>
-          <div class="stat-item">
-            <span class="stat-label">High</span>
-            <span class="stat-value severity-high" id="high-count">0</span>
-          </div>
-          <div class="stat-item">
-            <span class="stat-label">Medium</span>
-            <span class="stat-value severity-medium" id="medium-count">0</span>
-          </div>
-          <div class="stat-item">
-            <span class="stat-label">Low</span>
-            <span class="stat-value severity-low" id="low-count">0</span>
-          </div>
-          <div class="stat-item">
-            <span class="stat-label">Info</span>
-            <span class="stat-value severity-info" id="info-count">0</span>
-          </div>
-        </div>
-      </div>
-      
-      <div class="header-analysis">
-        <h3>Security Headers Analysis</h3>
-        <div id="headers-summary">
-          <!-- Header analysis will be displayed here -->
-        </div>
-      </div>
-    </div>
-    
-    <div class="findings-panel">
-      <h2>Security Issues</h2>
-      <div id="findings-list">
-        <!-- Findings will be dynamically added here -->
-        <div class="loading">Loading findings...</div>
-      </div>
-    </div>
-    
-    <div class="details-panel" id="details-panel">
-      <h2>Issue Details</h2>
-      <div class="no-selection">Select an issue to view details</div>
-      
-      <!-- Issue details will be dynamically populated here -->
-    </div>
-  </div>
-  
-  <script src="/src/devtools/panel.js"></script>
+    // Simple initialization to verify the panel is working
+    document.addEventListener('DOMContentLoaded', () => {
+      console.log("Panel DOM loaded");
+      const header = document.querySelector('header');
+      if (header) {
+        header.style.boxShadow = "0 2px 5px rgba(0,0,0,0.2)";
+      }
+    });
+  </script>
 </body>
 </html>
