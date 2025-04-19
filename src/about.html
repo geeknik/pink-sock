@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>About Pink Sock</title>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+      color: #333;
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+      line-height: 1.6;
+    }
+    
+    header {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+    
+    .logo {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 20px;
+    }
+    
+    .logo img {
+      width: 64px;
+      height: 64px;
+      margin-right: 16px;
+    }
+    
+    h1 {
+      font-size: 28px;
+      color: #FF69B4;
+      margin: 0;
+    }
+    
+    .subtitle {
+      font-size: 16px;
+      color: #666;
+    }
+    
+    h2 {
+      font-size: 22px;
+      color: #D6568F;
+      margin-top: 30px;
+      border-bottom: 1px solid #FFC0CB;
+      padding-bottom: 8px;
+    }
+    
+    h3 {
+      font-size: 18px;
+      margin-top: 25px;
+    }
+    
+    p {
+      margin: 16px 0;
+    }
+    
+    ul {
+      margin: 16px 0;
+      padding-left: 20px;
+    }
+    
+    li {
+      margin-bottom: 8px;
+    }
+    
+    .feature {
+      background-color: #FFF0F5;
+      border-radius: 8px;
+      padding: 16px;
+      margin-bottom: 16px;
+    }
+    
+    .feature h3 {
+      margin-top: 0;
+      color: #D6568F;
+    }
+    
+    footer {
+      margin-top: 40px;
+      text-align: center;
+      color: #666;
+      font-size: 14px;
+      border-top: 1px solid #FFC0CB;
+      padding-top: 20px;
+    }
+    
+    a {
+      color: #D6568F;
+      text-decoration: none;
+    }
+    
+    a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="logo">
+      <img src="assets/icons/icon128.png" alt="Pink Sock Logo">
+      <h1>Pink Sock</h1>
+    </div>
+    <div class="subtitle">IFrame Security Analyzer for Brave Browser</div>
+    <p>Version 1.0.0</p>
+  </header>
+  
+  <section>
+    <h2>About Pink Sock</h2>
+    <p>
+      Pink Sock is a browser extension for Brave that helps identify security issues related to iframe implementation.
+      It analyzes web pages for improper sandboxing of iframes and other security vulnerabilities that could lead to 
+      security risks like cross-site scripting (XSS), clickjacking, and data exfiltration.
+    </p>
+    <p>
+      This extension is designed for web developers, security professionals, and privacy-conscious users who want to
+      ensure that websites they build or visit are implementing proper iframe security measures.
+    </p>
+  </section>
+  
+  <section>
+    <h2>Key Features</h2>
+    
+    <div class="feature">
+      <h3>IFrame Sandbox Analysis</h3>
+      <p>
+        Detects missing or improperly configured sandbox attributes on iframe elements, which can lead to security
+        vulnerabilities if not properly implemented.
+      </p>
+    </div>
+    
+    <div class="feature">
+      <h3>Security Headers Check</h3>
+      <p>
+        Analyzes security headers related to iframe protection such as Content-Security-Policy, X-Frame-Options,
+        and Permissions-Policy to ensure proper configuration.
+      </p>
+    </div>
+    
+    <div class="feature">
+      <h3>Cross-Origin Resource Verification</h3>
+      <p>
+        Identifies potential cross-origin issues with iframes and ensures proper implementation of security
+        features like CORS, COEP, COOP, and CORP.
+      </p>
+    </div>
+    
+    <div class="feature">
+      <h3>Detailed DevTools Panel</h3>
+      <p>
+        Provides an in-depth analysis through a custom DevTools panel, allowing developers to see detailed
+        information about detected vulnerabilities and how to fix them.
+      </p>
+    </div>
+  </section>
+  
+  <section>
+    <h2>How It Works</h2>
+    <p>
+      Pink Sock automatically analyzes web pages as you browse, checking for iframe-related security issues:
+    </p>
+    <ol>
+      <li>The extension scans the page for iframe elements</li>
+      <li>It analyzes security attributes, headers, and configurations</li>
+      <li>Security issues are identified and categorized by severity</li>
+      <li>Results are displayed in the extension popup and DevTools panel</li>
+      <li>Specific remediation suggestions are provided for each issue</li>
+    </ol>
+  </section>
+  
+  <section>
+    <h2>Privacy Policy</h2>
+    <p>
+      Pink Sock respects your privacy and operates entirely within your browser:
+    </p>
+    <ul>
+      <li>No data is ever sent to external servers</li>
+      <li>All analysis happens locally in your browser</li>
+      <li>No tracking or analytics are included</li>
+      <li>No personal information is collected or stored</li>
+    </ul>
+  </section>
+  
+  <section>
+    <h2>Credits</h2>
+    <p>
+      Pink Sock was developed by geeknik with a focus on helping improve web security through better iframe implementation.
+    </p>
+    <p>
+      The extension is open source and available on GitHub.
+    </p>
+  </section>
+  
+  <footer>
+    <p>&copy; 2025 geeknik | <a href="https://github.com/yourusername/pink-sock" target="_blank">GitHub</a></p>
+  </footer>
+</body>
+</html>

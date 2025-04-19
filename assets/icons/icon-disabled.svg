@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512">
+  <!-- Background Circle -->
+  <circle cx="256" cy="256" r="250" fill="#F0F0F0" stroke="#AAAAAA" stroke-width="12"/>
+  
+  <!-- Disabled Pink Sock Icon -->
+  <path d="M156,156 C156,120 180,100 256,100 C332,100 356,120 356,156 L356,256 L156,256 Z" fill="#CCCCCC" stroke="#999999" stroke-width="8" stroke-linejoin="round"/>
+  
+  <!-- Sock Ribbing -->
+  <path d="M156,156 C156,140 170,130 200,120 M356,156 C356,140 342,130 312,120" stroke="#999999" stroke-width="8" stroke-linecap="round"/>
+  
+  <!-- Sock Bottom Extension -->
+  <path d="M156,256 C156,320 180,360 200,380 C220,400 250,412 256,412 C262,412 292,400 312,380 C332,360 356,320 356,256" fill="#CCCCCC" stroke="#999999" stroke-width="8" stroke-linejoin="round"/>
+  
+  <!-- Security Shield Emblem -->
+  <path d="M256,180 L226,200 L226,240 L256,260 L286,240 L286,200 Z" fill="#F0F0F0" stroke="#999999" stroke-width="6" stroke-linejoin="round"/>
+  
+  <!-- Lock Symbol -->
+  <rect x="246" y="220" width="20" height="20" rx="2" ry="2" fill="#999999"/>
+  <rect x="251" y="210" width="10" height="15" rx="5" ry="5" fill="#999999"/>
+  
+  <!-- Disabled Slash -->
+  <line x1="156" y1="356" x2="356" y2="156" stroke="#999999" stroke-width="12" stroke-linecap="round"/>
+</svg>

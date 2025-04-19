@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pink Sock Settings</title>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+      color: #333;
+      background-color: #f8f8f8;
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+      line-height: 1.6;
+    }
+    
+    header {
+      display: flex;
+      align-items: center;
+      margin-bottom: 30px;
+    }
+    
+    .logo {
+      display: flex;
+      align-items: center;
+    }
+    
+    .logo img {
+      width: 48px;
+      height: 48px;
+      margin-right: 16px;
+    }
+    
+    h1 {
+      font-size: 24px;
+      color: #FF69B4;
+      margin: 0;
+    }
+    
+    h2 {
+      font-size: 18px;
+      color: #D6568F;
+      margin-top: 30px;
+      border-bottom: 1px solid #FFC0CB;
+      padding-bottom: 8px;
+    }
+    
+    .settings-container {
+      background-color: #fff;
+      border-radius: 8px;
+      padding: 20px;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+      margin-bottom: 20px;
+    }
+    
+    .setting-group {
+      margin-bottom: 24px;
+    }
+    
+    .setting-group:last-child {
+      margin-bottom: 0;
+    }
+    
+    .setting-item {
+      display: flex;
+      align-items: center;
+      margin-bottom: 12px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid #f0f0f0;
+    }
+    
+    .setting-item:last-child {
+      margin-bottom: 0;
+      padding-bottom: 0;
+      border-bottom: none;
+    }
+    
+    .setting-item label {
+      flex: 1;
+    }
+    
+    .setting-title {
+      font-weight: 600;
+      display: block;
+      margin-bottom: 4px;
+    }
+    
+    .setting-description {
+      font-size: 14px;
+      color: #666;
+    }
+    
+    input[type="checkbox"] {
+      transform: scale(1.2);
+    }
+    
+    select {
+      padding: 8px 12px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      background-color: #fff;
+      min-width: 150px;
+    }
+    
+    .actions {
+      display: flex;
+      justify-content: flex-end;
+      margin-top: 20px;
+    }
+    
+    button {
+      background-color: #FF69B4;
+      color: white;
+      border: none;
+      padding: 10px 16px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 14px;
+      transition: background-color 0.2s;
+    }
+    
+    button:hover {
+      background-color: #D6568F;
+    }
+    
+    button.secondary {
+      background-color: #f0f0f0;
+      color: #333;
+      margin-right: 10px;
+    }
+    
+    button.secondary:hover {
+      background-color: #e0e0e0;
+    }
+    
+    .success-message {
+      background-color: #e6f7ed;
+      border-left: 4px solid #00CC00;
+      padding: 10px 16px;
+      margin-top: 20px;
+      border-radius: 4px;
+      display: none;
+    }
+    
+    footer {
+      margin-top: 40px;
+      text-align: center;
+      color: #666;
+      font-size: 14px;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="logo">
+      <img src="assets/icons/icon48.png" alt="Pink Sock Logo">
+      <h1>Pink Sock Settings</h1>
+    </div>
+  </header>
+  
+  <div class="settings-container">
+    <h2>Security Checks</h2>
+    <div class="setting-group">
+      <div class="setting-item">
+        <label>
+          <span class="setting-title">IFrame Sandbox Analysis</span>
+          <span class="setting-description">Check for improper sandboxing of iframe elements</span>
+        </label>
+        <input type="checkbox" id="check-iframe-sandbox" checked>
+      </div>
+      
+      <div class="setting-item">
+        <label>
+          <span class="setting-title">Security Headers Check</span>
+          <span class="setting-description">Verify presence and configuration of security headers</span>
+        </label>
+        <input type="checkbox" id="check-security-headers" checked>
+      </div>
+      
+      <div class="setting-item">
+        <label>
+          <span class="setting-title">Content Security Policy Analysis</span>
+          <span class="setting-description">Analyze CSP directives related to iframe security</span>
+        </label>
+        <input type="checkbox" id="check-csp" checked>
+      </div>
+      
+      <div class="setting-item">
+        <label>
+          <span class="setting-title">Cross-Origin Checks</span>
+          <span class="setting-description">Identify cross-origin vulnerabilities</span>
+        </label>
+        <input type="checkbox" id="check-cross-origin" checked>
+      </div>
+    </div>
+  </div>
+  
+  <div class="settings-container">
+    <h2>Notifications</h2>
+    <div class="setting-group">
+      <div class="setting-item">
+        <label>
+          <span class="setting-title">Auto-Scan on Page Load</span>
+          <span class="setting-description">Automatically scan pages when they load</span>
+        </label>
+        <input type="checkbox" id="auto-scan" checked>
+      </div>
+      
+      <div class="setting-item">
+        <label>
+          <span class="setting-title">Notification Level</span>
+          <span class="setting-description">Minimum severity level to show in the badge</span>
+        </label>
+        <select id="notification-level">
+          <option value="critical">Critical Only</option>
+          <option value="high">High & Critical</option>
+          <option value="medium" selected>Medium & Above</option>
+          <option value="low">Low & Above</option>
+          <option value="info">All Issues</option>
+        </select>
+      </div>
+    </div>
+  </div>
+  
+  <div class="settings-container">
+    <h2>Advanced Options</h2>
+    <div class="setting-group">
+      <div class="setting-item">
+        <label>
+          <span class="setting-title">Custom Security Policies</span>
+          <span class="setting-description">Enable checking against custom security policies</span>
+        </label>
+        <input type="checkbox" id="custom-policies">
+      </div>
+      
+      <div class="setting-item">
+        <label>
+          <span class="setting-title">Whitelist Domains</span>
+          <span class="setting-description">Skip scanning for these comma-separated domains</span>
+        </label>
+        <input type="text" id="whitelist-domains" placeholder="example.com, trusted-site.org" style="flex: 1; padding: 8px; border: 1px solid #ddd; border-radius: 4px;">
+      </div>
+    </div>
+  </div>
+  
+  <div class="actions">
+    <button class="secondary" id="reset-btn">Reset to Defaults</button>
+    <button id="save-btn">Save Settings</button>
+  </div>
+  
+  <div class="success-message" id="success-message">
+    Settings saved successfully!
+  </div>
+  
+  <script src="options.js"></script>
+</body>
+</html>

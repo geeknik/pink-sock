@@ -1,0 +1,34 @@
+{
+  "name": "pink-sock",
+  "version": "1.0.0",
+  "description": "A Brave browser extension that checks for improper sandboxing of iframes and other related security lapses",
+  "main": "index.js",
+  "scripts": {
+    "build": "webpack --mode production",
+    "dev": "webpack --mode development --watch",
+    "lint": "eslint src/",
+    "icons": "node assets/icons/convert_icons.js"
+  },
+  "keywords": [
+    "browser-extension",
+    "security",
+    "iframe",
+    "sandbox",
+    "brave"
+  ],
+  "author": "geeknik",
+  "license": "MIT",
+  "devDependencies": {
+    "@babel/core": "^7.21.0",
+    "@babel/preset-env": "^7.21.0",
+    "babel-loader": "^9.1.2",
+    "canvas": "^2.11.0",
+    "copy-webpack-plugin": "^11.0.0",
+    "css-loader": "^6.7.3",
+    "eslint": "^8.36.0",
+    "html-webpack-plugin": "^5.5.0",
+    "style-loader": "^3.3.2",
+    "webpack": "^5.76.1",
+    "webpack-cli": "^5.0.1"
+  }
+}

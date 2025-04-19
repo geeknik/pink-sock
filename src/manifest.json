@@ -1,0 +1,49 @@
+{
+  "name": "Pink Sock",
+  "version": "1.0.0",
+  "description": "A browser extension that checks for improper sandboxing of iframes and other related security lapses",
+  "manifest_version": 3,
+  "background": {
+    "service_worker": "background/service-worker.js"
+  },
+  "permissions": [
+    "webNavigation",
+    "webRequest",
+    "storage",
+    "tabs"
+  ],
+  "host_permissions": [
+    "<all_urls>"
+  ],
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["content/content-analyzer.js"],
+      "run_at": "document_idle"
+    }
+  ],
+  "action": {
+    "default_popup": "popup/popup.html",
+    "default_icon": {
+      "16": "assets/icons/icon16.png",
+      "48": "assets/icons/icon48.png",
+      "128": "assets/icons/icon128.png"
+    }
+  },
+  "icons": {
+    "16": "assets/icons/icon16.png",
+    "48": "assets/icons/icon48.png",
+    "128": "assets/icons/icon128.png"
+  },
+  "devtools_page": "devtools/devtools.html",
+  "options_ui": {
+    "page": "options.html",
+    "open_in_tab": true
+  },
+  "web_accessible_resources": [
+    {
+      "resources": ["assets/icons/*"],
+      "matches": ["<all_urls>"]
+    }
+  ]
+}
