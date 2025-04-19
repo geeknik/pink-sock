@@ -33,7 +33,7 @@
             <div class="code-label">Secure code:</div>
             <pre><code>&lt;iframe 
   src="../assets/iframe-content.html" 
-  sandbox="allow-scripts allow-forms allow-same-origin allow-popups-to-escape-sandbox"
+  sandbox="allow-scripts allow-popups-to-escape-sandbox"
   allow="camera=(), microphone=()"
   loading="lazy"
   referrerpolicy="no-referrer"
@@ -45,7 +45,7 @@
             <div class="iframe-container">
                 <iframe 
                     src="../assets/iframe-content.html" 
-                    sandbox="allow-scripts allow-forms allow-popups-to-escape-sandbox"
+                    sandbox="allow-scripts allow-popups-to-escape-sandbox"
                     allow="camera=(), microphone=()"
                     loading="lazy"
                     referrerpolicy="no-referrer"
@@ -63,10 +63,18 @@
             <p>The sandbox attribute is properly configured with the minimum necessary permissions:</p>
             <ul>
                 <li><code>allow-scripts</code> - Permits JavaScript execution within the iframe</li>
-                <li><code>allow-forms</code> - Allows form submission within the iframe</li>
                 <li><code>allow-popups-to-escape-sandbox</code> - Allows popups but ensures they're not sandboxed</li>
             </ul>
-            <p>Notably absent is <code>allow-same-origin</code> (which would defeat sandbox protections when combined with allow-scripts) and <code>allow-top-navigation</code> (which could enable clickjacking).</p>
+            <p>Notably absent are:</p>
+            <ul>
+                <li><code>allow-same-origin</code> - Would defeat sandbox protections when combined with allow-scripts</li>
+                <li><code>allow-top-navigation</code> - Could enable clickjacking attacks</li>
+                <li><code>allow-forms</code> - Omitted to prevent the risky combination with allow-scripts that could enable phishing</li>
+            </ul>
+            
+            <div class="explanation">
+                <strong>Important Security Note:</strong> While <code>allow-forms</code> is often necessary for functionality, combining it with <code>allow-scripts</code> can create potential security risks. If form submission is required, consider additional protections such as proper CSP form-action directives and implementing anti-CSRF measures.
+            </div>
             
             <h3>Additional Security Attributes</h3>
             <ul>
@@ -93,6 +101,7 @@
             <ol>
                 <li>Always use the sandbox attribute with the principle of least privilege</li>
                 <li>Never combine <code>allow-scripts</code> with <code>allow-same-origin</code></li>
+                <li>Be cautious when combining <code>allow-scripts</code> with <code>allow-forms</code></li>
                 <li>Include a strong Content Security Policy</li>
                 <li>Use <code>referrerpolicy</code> to control information leakage</li>
                 <li>Explicitly control permissions with the <code>allow</code> attribute</li>
@@ -101,6 +110,31 @@
                 <li>Add <code>title</code> attribute for accessibility</li>
                 <li>Use <code>loading="lazy"</code> for performance benefits</li>
             </ol>
+            
+            <h3>Security Trade-offs</h3>
+            <p>Some combinations of features involve security trade-offs:</p>
+            <table>
+                <tr>
+                    <th>Feature Combination</th>
+                    <th>Risk Level</th>
+                    <th>Mitigation</th>
+                </tr>
+                <tr>
+                    <td><code>allow-scripts</code> + <code>allow-same-origin</code></td>
+                    <td>High</td>
+                    <td>Never use this combination as it defeats sandboxing</td>
+                </tr>
+                <tr>
+                    <td><code>allow-scripts</code> + <code>allow-forms</code></td>
+                    <td>Medium</td>
+                    <td>Use only when necessary and add CSP form-action constraints</td>
+                </tr>
+                <tr>
+                    <td><code>allow-scripts</code> + <code>allow-top-navigation</code></td>
+                    <td>Medium</td>
+                    <td>Use <code>allow-top-navigation-by-user-activation</code> instead</td>
+                </tr>
+            </table>
             
             <h3>Additional Protection Layers</h3>
             <p>For critical applications, consider adding:</p>
