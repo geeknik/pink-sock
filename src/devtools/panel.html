@@ -4,12 +4,16 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Pink Sock - Detailed Analysis</title>
-  <link rel="stylesheet" href="panel.css">
+  <link rel="stylesheet" href="/src/devtools/panel.css">
+  <script type="text/javascript">
+    // Dynamically set the base URL for resources
+    document.write('<base href="' + chrome.runtime.getURL('/') + '">');
+  </script>
 </head>
 <body>
   <header>
     <div class="logo">
-      <img src="../assets/icons/icon48.png" alt="Pink Sock Logo">
+      <img src="/assets/icons/icon48.png" alt="Pink Sock Logo">
       <h1>Pink Sock</h1>
     </div>
     <div class="subtitle">IFrame Security Analyzer - Detailed Report</div>
@@ -105,6 +109,6 @@
     </div>
   </div>
   
-  <script src="panel.js"></script>
+  <script src="/src/devtools/panel.js"></script>
 </body>
 </html>

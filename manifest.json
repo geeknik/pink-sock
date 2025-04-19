@@ -4,13 +4,14 @@
   "description": "A browser extension that checks for improper sandboxing of iframes and other related security lapses",
   "manifest_version": 3,
   "background": {
-    "service_worker": "src/background/service-worker.js"
+    "service_worker": "src/background/simple-service-worker.js"
   },
   "permissions": [
     "webNavigation",
     "webRequest",
     "storage",
-    "tabs"
+    "tabs",
+    "scripting"
   ],
   "host_permissions": [
     "<all_urls>"
@@ -42,7 +43,11 @@
   },
   "web_accessible_resources": [
     {
-      "resources": ["assets/icons/*"],
+      "resources": [
+        "assets/icons/*",
+        "src/devtools/*",
+        "src/*"
+      ],
       "matches": ["<all_urls>"]
     }
   ]
