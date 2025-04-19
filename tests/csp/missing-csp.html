@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Missing Content Security Policy - Pink Sock Test</title>
+    <link rel="stylesheet" href="../assets/style.css">
+    <!-- Intentionally missing Content Security Policy -->
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <img src="../assets/logo.svg" alt="Pink Sock Logo">
+            <h1>Missing Content Security Policy</h1>
+        </div>
+        <div class="severity medium">Medium</div>
+    </header>
+    
+    <main>
+        <p class="description">
+            This test page demonstrates a security vulnerability where a page with iframes lacks a Content Security Policy (CSP),
+            leaving it vulnerable to various attacks including XSS, clickjacking, and data injection.
+        </p>
+        
+        <div class="vulnerability">
+            <strong>Security Issue:</strong> Page lacks any Content Security Policy, providing no defense-in-depth 
+            protection against various security threats related to content embedding.
+        </div>
+        
+        <h2>Test Case</h2>
+        
+        <div class="test-container">
+            <div class="code-label">Vulnerable page head (missing CSP):</div>
+            <pre><code>&lt;head&gt;
+  &lt;meta charset="UTF-8"&gt;
+  &lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;
+  &lt;title&gt;Missing CSP - Pink Sock Test&lt;/title&gt;
+  &lt;link rel="stylesheet" href="../assets/style.css"&gt;
+  &lt;!-- No Content Security Policy --&gt;
+&lt;/head&gt;</code></pre>
+            
+            <div class="iframe-container">
+                <iframe src="../assets/iframe-content.html" width="100%" height="200"></iframe>
+            </div>
+        </div>
+        
+        <h2>Explanation</h2>
+        
+        <div class="explanation">
+            <p>Content Security Policy (CSP) is a critical defense-in-depth protection mechanism that helps mitigate many web vulnerabilities, particularly for pages that include iframes. Without a CSP, a page is vulnerable to:</p>
+            
+            <ul>
+                <li>Cross-site scripting (XSS) attacks</li>
+                <li>Clickjacking through malicious framing</li>
+                <li>Injection of unauthorized content</li>
+                <li>Data exfiltration through unintended connections</li>
+                <li>Mixed content vulnerabilities</li>
+            </ul>
+            
+            <p>A robust CSP helps enforce the security boundaries between your content and other potentially untrusted content, including content loaded in iframes.</p>
+            
+            <h3>How Pink Sock detects this issue:</h3>
+            <p>Pink Sock scans for CSP headers and meta tags on pages that include iframes. When no CSP is detected, it flags the issue as a medium-severity security vulnerability.</p>
+            
+            <h3>How to fix:</h3>
+            <p>Implement a Content Security Policy either through HTTP headers or a meta tag:</p>
+            
+            <pre><code>&lt;meta http-equiv="Content-Security-Policy" content="default-src 'self'; frame-src 'self'; frame-ancestors 'self'; script-src 'self'; style-src 'self';"&gt;</code></pre>
+            
+            <p>Or via HTTP header:</p>
+            
+            <pre><code>Content-Security-Policy: default-src 'self'; frame-src 'self'; frame-ancestors 'self'; script-src 'self'; style-src 'self';</code></pre>
+            
+            <p>The specific policy should be tailored to your application's needs, but should at minimum include directives like frame-src and frame-ancestors to control iframe content and embedding.</p>
+        </div>
+        
+        <h2>Additional Information</h2>
+        
+        <div class="test-detail">
+            <h3>Key CSP Directives for IFrame Security</h3>
+            <p>When implementing CSP, these directives are particularly important for iframe security:</p>
+            
+            <table>
+                <tr>
+                    <th>Directive</th>
+                    <th>Purpose</th>
+                    <th>Example</th>
+                </tr>
+                <tr>
+                    <td>frame-src</td>
+                    <td>Controls what URLs can be loaded in iframes</td>
+                    <td>frame-src 'self' https://trusted-site.com;</td>
+                </tr>
+                <tr>
+                    <td>frame-ancestors</td>
+                    <td>Controls which sites can embed your page in frames</td>
+                    <td>frame-ancestors 'self';</td>
+                </tr>
+                <tr>
+                    <td>child-src</td>
+                    <td>Controls frame sources and workers (legacy)</td>
+                    <td>child-src 'self';</td>
+                </tr>
+                <tr>
+                    <td>default-src</td>
+                    <td>Fallback for other fetch directives</td>
+                    <td>default-src 'self';</td>
+                </tr>
+            </table>
+            
+            <h3>CSP Implementation Strategy</h3>
+            <p>Consider this progressive approach to implementing CSP:</p>
+            
+            <ol>
+                <li><strong>Report-Only Mode:</strong> Start with CSP in report-only mode to identify potential issues:
+                <pre><code>Content-Security-Policy-Report-Only: default-src 'self'; report-uri /csp-violations;</code></pre></li>
+                <li><strong>Basic Policy:</strong> Implement a simple policy focusing on critical protections</li>
+                <li><strong>Iterative Refinement:</strong> Gradually tighten the policy, addressing violations as they occur</li>
+                <li><strong>Strict Policy:</strong> Move to a comprehensive policy that follows the principle of least privilege</li>
+            </ol>
+            
+            <h3>Legacy Browser Support</h3>
+            <p>For broader compatibility, consider implementing both CSP and older security headers:</p>
+            <ul>
+                <li><code>X-Frame-Options</code> for legacy frame embedding control</li>
+                <li><code>X-XSS-Protection</code> for older browsers without full CSP support</li>
+                <li><code>X-Content-Type-Options</code> to prevent MIME type sniffing</li>
+            </ul>
+        </div>
+    </main>
+    
+    <div class="nav">
+        <a href="missing-frame-ancestors.html">Previous Test</a>
+        <a href="missing-frame-src.html">Next Test: Missing frame-src Directive</a>
+    </div>
+    
+    <footer>
+        <p>Pink Sock - IFrame Security Analyzer for Brave Browser</p>
+    </footer>
+</body>
+</html>

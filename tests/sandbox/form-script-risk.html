@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Form & Script Combinations - Pink Sock Test</title>
+    <link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <img src="../assets/logo.svg" alt="Pink Sock Logo">
+            <h1>Form & Script Combinations</h1>
+        </div>
+        <div class="severity medium">Medium</div>
+    </header>
+    
+    <main>
+        <p class="description">
+            This test page demonstrates a security vulnerability where an iframe is given both form submission and
+            script execution capabilities through the sandbox attribute, creating potential phishing risks.
+        </p>
+        
+        <div class="vulnerability">
+            <strong>Security Issue:</strong> IFrame with both <code>allow-forms</code> and <code>allow-scripts</code> sandbox
+            directives without proper navigation restrictions, enabling sophisticated phishing attacks.
+        </div>
+        
+        <h2>Test Case</h2>
+        
+        <div class="test-container">
+            <div class="code-label">Vulnerable code:</div>
+            <pre><code>&lt;iframe 
+  src="../assets/iframe-content.html" 
+  sandbox="allow-scripts allow-forms"
+  width="100%" 
+  height="300"
+&gt;&lt;/iframe&gt;</code></pre>
+            
+            <div class="iframe-container">
+                <iframe 
+                    src="../assets/iframe-content.html" 
+                    sandbox="allow-scripts allow-forms"
+                    width="100%" 
+                    height="300">
+                </iframe>
+            </div>
+        </div>
+        
+        <h2>Explanation</h2>
+        
+        <div class="explanation">
+            <p>While allowing forms and scripts individually in a sandbox is often necessary for functionality, the combination creates elevated risks:</p>
+            
+            <ul>
+                <li>Scripts can dynamically create and manipulate forms</li>
+                <li>Forms can be pre-filled with misleading information</li>
+                <li>Form submissions can be intercepted and data exfiltrated</li>
+                <li>Form targets can be dynamically changed</li>
+                <li>The combination enables sophisticated social engineering attacks</li>
+            </ul>
+            
+            <p>When <code>allow-forms</code> and <code>allow-scripts</code> are combined without proper navigation restrictions, malicious content could trick users into submitting sensitive information.</p>
+            
+            <h3>How Pink Sock detects this issue:</h3>
+            <p>Pink Sock analyzes the sandbox attribute on iframe elements and flags the combination of <code>allow-forms</code> and
+            <code>allow-scripts</code> without proper user activation requirements as a medium-severity security issue,
+            especially for cross-origin content.</p>
+            
+            <h3>How to fix:</h3>
+            <p>Consider these approaches to mitigate the risk:</p>
+            
+            <ol>
+                <li>Only allow one capability if possible (forms or scripts but not both)</li>
+                <li>Add user activation requirements for navigation</li>
+                <li>Restrict form submission targets</li>
+                <li>Implement proper Content Security Policy (CSP)</li>
+            </ol>
+            
+            <p>If both capabilities are needed, add user activation requirements:</p>
+            
+            <pre><code>&lt;iframe 
+  src="../assets/iframe-content.html" 
+  sandbox="allow-scripts allow-forms allow-top-navigation-by-user-activation"
+  width="100%" 
+  height="300"
+&gt;&lt;/iframe&gt;</code></pre>
+            
+            <p>This ensures navigation can only occur after explicit user interaction, reducing the risk of automatic form submissions to malicious endpoints.</p>
+        </div>
+        
+        <h2>Additional Information</h2>
+        
+        <div class="test-detail">
+            <h3>Risk Assessment</h3>
+            <p>The risk level of this vulnerability depends on several factors:</p>
+            
+            <table>
+                <tr>
+                    <th>Factor</th>
+                    <th>Lower Risk</th>
+                    <th>Higher Risk</th>
+                </tr>
+                <tr>
+                    <td>Content Origin</td>
+                    <td>Same origin, trusted source</td>
+                    <td>Cross-origin, third-party content</td>
+                </tr>
+                <tr>
+                    <td>Navigation Capabilities</td>
+                    <td>No navigation allowed</td>
+                    <td>Unrestricted navigation</td>
+                </tr>
+                <tr>
+                    <td>Content Type</td>
+                    <td>Static, verified content</td>
+                    <td>Dynamic, user-generated content</td>
+                </tr>
+                <tr>
+                    <td>Context</td>
+                    <td>Non-sensitive information</td>
+                    <td>Financial or authentication context</td>
+                </tr>
+            </table>
+            
+            <h3>Attack Vector Example</h3>
+            <p>A malicious iframe with form and script capabilities could:</p>
+            
+            <ol>
+                <li>Create a form that visually mimics a legitimate authentication form</li>
+                <li>Pre-fill the form with contextually relevant information (through JavaScript) to increase credibility</li>
+                <li>Use scripts to validate input, creating the impression of a legitimate form</li>
+                <li>Submit the form to an attacker-controlled endpoint</li>
+                <li>Show a success message and redirect to maintain the illusion of legitimacy</li>
+            </ol>
+            
+            <h3>Defense in Depth</h3>
+            <p>Beyond sandbox restrictions, consider implementing:</p>
+            
+            <ul>
+                <li>Content Security Policy (CSP) with form-action directive to restrict submission targets</li>
+                <li>Subresource Integrity (SRI) for loaded scripts</li>
+                <li>Cross-Origin Resource Sharing (CORS) restrictions</li>
+                <li>X-Content-Type-Options header to prevent MIME sniffing</li>
+                <li>Anti-CSRF tokens for important forms</li>
+            </ul>
+        </div>
+    </main>
+    
+    <div class="nav">
+        <a href="risky-navigation.html">Previous Test</a>
+        <a href="../index.html">Back to Test Index</a>
+    </div>
+    
+    <footer>
+        <p>Pink Sock - IFrame Security Analyzer for Brave Browser</p>
+    </footer>
+</body>
+</html>

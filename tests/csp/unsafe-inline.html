@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Unsafe Inline Scripts - Pink Sock Test</title>
+    <link rel="stylesheet" href="../assets/style.css">
+    <!-- CSP with unsafe-inline in script-src -->
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self'; frame-src 'self'; frame-ancestors 'self';">
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <img src="../assets/logo.svg" alt="Pink Sock Logo">
+            <h1>Unsafe Inline Scripts</h1>
+        </div>
+        <div class="severity medium">Medium</div>
+    </header>
+    
+    <main>
+        <p class="description">
+            This test page demonstrates a security vulnerability where a Content Security Policy (CSP) allows unsafe inline
+            scripts through the <code>'unsafe-inline'</code> directive, which significantly reduces the effectiveness of
+            the CSP against cross-site scripting (XSS) attacks.
+        </p>
+        
+        <div class="vulnerability">
+            <strong>Security Issue:</strong> Content Security Policy includes <code>'unsafe-inline'</code> in the <code>script-src</code> 
+            directive, which allows inline script execution and reduces protection against XSS attacks.
+        </div>
+        
+        <h2>Test Case</h2>
+        
+        <div class="test-container">
+            <div class="code-label">Vulnerable code:</div>
+            <pre><code>&lt;meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self'; frame-src 'self'; frame-ancestors 'self';"&gt;</code></pre>
+            
+            <p>This CSP includes comprehensive protections but allows inline scripts, creating a significant XSS vulnerability.</p>
+            
+            <div class="iframe-container">
+                <!-- Example of an inline script that the CSP would allow -->
+                <iframe srcdoc="&lt;html&gt;&lt;body&gt;&lt;h2&gt;Inline Script Demo&lt;/h2&gt;&lt;p&gt;This iframe contains an inline script that would be allowed by the unsafe-inline CSP.&lt;/p&gt;&lt;script&gt;document.write('This text was injected by an inline script. In a real attack, this could be malicious code.');&lt;/script&gt;&lt;/body&gt;&lt;/html&gt;" width="100%" height="200"></iframe>
+            </div>
+        </div>
+        
+        <h2>Explanation</h2>
+        
+        <div class="explanation">
+            <p>The <code>'unsafe-inline'</code> keyword in a Content Security Policy allows inline script execution, including:</p>
+            
+            <ul>
+                <li>Inline <code>&lt;script&gt;</code> elements</li>
+                <li>JavaScript in event handlers (e.g., <code>onclick</code>)</li>
+                <li>JavaScript in <code>javascript:</code> URLs</li>
+                <li><code>eval()</code>-like functions (unless specifically blocked)</li>
+            </ul>
+            
+            <p>This significantly reduces the effectiveness of CSP as a defense against cross-site scripting (XSS) attacks, as an attacker who can inject HTML content can also inject executable JavaScript directly into the page.</p>
+            
+            <h3>How Pink Sock detects this issue:</h3>
+            <p>Pink Sock analyzes CSP headers and meta tags for the presence of <code>'unsafe-inline'</code> in the <code>script-src</code> 
+            directive, flagging it as a medium-severity security issue, especially on pages containing iframes.</p>
+            
+            <h3>How to fix:</h3>
+            <p>There are several approaches to eliminate the need for unsafe inline scripts:</p>
+            
+            <ol>
+                <li><strong>Move inline scripts to external files:</strong></li>
+            </ol>
+            
+            <pre><code>// Instead of:
+&lt;script&gt;doSomething();&lt;/script&gt;
+
+// Use:
+&lt;script src="my-script.js"&gt;&lt;/script&gt;</code></pre>
+            
+            <ol start="2">
+                <li><strong>Use nonces for necessary inline scripts:</strong></li>
+            </ol>
+            
+            <pre><code>&lt;meta http-equiv="Content-Security-Policy" content="script-src 'self' 'nonce-RandomNonceHere';"&gt;
+&lt;script nonce="RandomNonceHere"&gt;doSomething();&lt;/script&gt;</code></pre>
+            
+            <ol start="3">
+                <li><strong>Use hashes for static inline scripts:</strong></li>
+            </ol>
+            
+            <pre><code>&lt;meta http-equiv="Content-Security-Policy" content="script-src 'self' 'sha256-HashOfScriptContentHere';"&gt;</code></pre>
+            
+            <p>The nonce or hash approach provides the security benefits of CSP while still allowing necessary inline scripts in a controlled manner.</p>
+        </div>
+        
+        <h2>Additional Information</h2>
+        
+        <div class="test-detail">
+            <h3>Security Impact of unsafe-inline</h3>
+            <p>The primary purpose of CSP is to prevent or mitigate XSS attacks by controlling script execution. Including <code>'unsafe-inline'</code> substantially undermines this protection:</p>
+            
+            <ul>
+                <li>If an attacker can inject HTML, they can inject executable scripts</li>
+                <li>DOM-based XSS attacks become much more feasible</li>
+                <li>The additional attack surface negates many of the benefits of having a CSP</li>
+            </ul>
+            
+            <h3>Nonce-Based Approach</h3>
+            <p>Nonces provide a more flexible approach than hashes:</p>
+            
+            <ol>
+                <li>Generate a cryptographically strong random token (nonce) for each page load</li>
+                <li>Include the nonce in your CSP: <code>script-src 'nonce-RandomValue'</code></li>
+                <li>Add the same nonce to any inline scripts: <code>&lt;script nonce="RandomValue"&gt;</code></li>
+                <li>Scripts without a matching nonce will be blocked</li>
+            </ol>
+            
+            <p>The nonce must be regenerated on each page load and should not be predictable.</p>
+            
+            <h3>Hash-Based Approach</h3>
+            <p>For static inline scripts, you can use cryptographic hashes:</p>
+            
+            <ol>
+                <li>Calculate the SHA hash of the script's content (without the <code>&lt;script&gt;</code> tags)</li>
+                <li>Include the hash in your CSP: <code>script-src 'sha256-HashValue'</code></li>
+                <li>Any inline script matching this hash will be allowed</li>
+            </ol>
+            
+            <p>This works well for static content but requires updating the CSP whenever the script changes.</p>
+            
+            <h3>Strict CSP Example</h3>
+            <p>A comprehensive CSP that provides strong protection without <code>'unsafe-inline'</code>:</p>
+            
+            <pre><code>Content-Security-Policy: 
+  default-src 'self';
+  script-src 'self' 'nonce-RandomNonce';
+  style-src 'self';
+  img-src 'self' data:;
+  font-src 'self';
+  object-src 'none';
+  frame-src 'self';
+  frame-ancestors 'self';
+  base-uri 'self';
+  form-action 'self';</code></pre>
+        </div>
+    </main>
+    
+    <div class="nav">
+        <a href="missing-frame-src.html">Previous Test</a>
+        <a href="../index.html">Back to Test Index</a>
+    </div>
+    
+    <footer>
+        <p>Pink Sock - IFrame Security Analyzer for Brave Browser</p>
+    </footer>
+</body>
+</html>

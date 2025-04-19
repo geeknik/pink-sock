@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Missing crossorigin Attribute - Pink Sock Test</title>
+    <link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <img src="../assets/logo.svg" alt="Pink Sock Logo">
+            <h1>Missing crossorigin Attribute</h1>
+        </div>
+        <div class="severity medium">Medium</div>
+    </header>
+    
+    <main>
+        <p class="description">
+            This test page demonstrates a security vulnerability where a cross-origin iframe lacks the <code>crossorigin</code>
+            attribute, which may cause unintended credential transmission and other cross-origin security issues.
+        </p>
+        
+        <div class="vulnerability">
+            <strong>Security Issue:</strong> Cross-origin iframe without <code>crossorigin</code> attribute, potentially 
+            allowing unintended credential transmission or cross-origin information leakage.
+        </div>
+        
+        <h2>Test Case</h2>
+        
+        <div class="test-container">
+            <div class="code-label">Vulnerable code:</div>
+            <pre><code>&lt;iframe 
+  src="https://example.com/iframe-content.html" 
+  width="100%" 
+  height="300"
+&gt;&lt;/iframe&gt;</code></pre>
+            
+            <div class="iframe-container">
+                <!-- Using a simulated cross-origin iframe for the test -->
+                <iframe 
+                    src="../assets/iframe-content.html" 
+                    width="100%" 
+                    height="300">
+                </iframe>
+                <p><small><em>Note: This is simulating a cross-origin iframe for testing purposes</em></small></p>
+            </div>
+        </div>
+        
+        <h2>Explanation</h2>
+        
+        <div class="explanation">
+            <p>The <code>crossorigin</code> attribute on iframes (and other elements that make cross-origin requests like images, scripts, etc.) controls how the browser handles cross-origin resource sharing (CORS) and credentials. Missing this attribute when loading cross-origin content can lead to security issues:</p>
+            
+            <ul>
+                <li>By default, cross-origin requests include cookies and other credentials</li>
+                <li>This can lead to unintended credential transmission to third-party domains</li>
+                <li>May enable session hijacking or cross-site request forgery (CSRF) attacks</li>
+                <li>Could expose sensitive cross-origin information to the embedding page</li>
+                <li>Prevents proper error handling for cross-origin resources</li>
+            </ul>
+            
+            <h3>How Pink Sock detects this issue:</h3>
+            <p>Pink Sock analyzes iframe elements with cross-origin src attributes and checks for the presence of the <code>crossorigin</code> attribute. When loading cross-origin content without this attribute, it flags it as a medium-severity security issue.</p>
+            
+            <h3>How to fix:</h3>
+            <p>Add the <code>crossorigin</code> attribute to cross-origin iframes with the appropriate value:</p>
+            
+            <pre><code>&lt;iframe 
+  src="https://example.com/iframe-content.html" 
+  crossorigin="anonymous"
+  width="100%" 
+  height="300"
+&gt;&lt;/iframe&gt;</code></pre>
+            
+            <p>The <code>crossorigin</code> attribute accepts two values:</p>
+            <ul>
+                <li><code>anonymous</code>: Makes cross-origin requests without sending credentials</li>
+                <li><code>use-credentials</code>: Makes cross-origin requests with credentials (cookies, client-side SSL certificates, etc.)</li>
+            </ul>
+            
+            <p>For most scenarios, <code>anonymous</code> is the more secure option as it prevents unintended credential transmission.</p>
+        </div>
+        
+        <h2>Additional Information</h2>
+        
+        <div class="test-detail">
+            <h3>Cross-Origin Resource Sharing (CORS)</h3>
+            <p>CORS is a security mechanism that restricts web pages from making requests to domains different from the one that served the original page. The <code>crossorigin</code> attribute works with CORS to control cross-domain resource sharing:</p>
+            
+            <ul>
+                <li>Without <code>crossorigin</code>, the browser still makes the request but can't access certain response data</li>
+                <li>With <code>crossorigin="anonymous"</code>, the request omits credentials but can access the response if the server allows it</li>
+                <li>With <code>crossorigin="use-credentials"</code>, the request includes credentials and can access the response if the server explicitly allows credentials</li>
+            </ul>
+            
+            <h3>Server-Side CORS Headers</h3>
+            <p>For the <code>crossorigin</code> attribute to work properly, the server serving the cross-origin content must send the appropriate CORS headers:</p>
+            
+            <ul>
+                <li>For <code>anonymous</code>: <code>Access-Control-Allow-Origin: *</code> or specific origin</li>
+                <li>For <code>use-credentials</code>: <code>Access-Control-Allow-Origin: specific-origin</code> (not wildcard) and <code>Access-Control-Allow-Credentials: true</code></li>
+            </ul>
+            
+            <h3>Security vs. Functionality</h3>
+            <p>When deciding on crossorigin settings, consider these trade-offs:</p>
+            
+            <table>
+                <tr>
+                    <th>Setting</th>
+                    <th>Security Level</th>
+                    <th>Functionality</th>
+                    <th>Use Case</th>
+                </tr>
+                <tr>
+                    <td>No crossorigin</td>
+                    <td>Low</td>
+                    <td>Limited</td>
+                    <td>Not recommended, legacy compatibility only</td>
+                </tr>
+                <tr>
+                    <td>crossorigin="anonymous"</td>
+                    <td>Higher</td>
+                    <td>Moderate</td>
+                    <td>Most third-party content where credentials aren't needed</td>
+                </tr>
+                <tr>
+                    <td>crossorigin="use-credentials"</td>
+                    <td>Medium</td>
+                    <td>Full</td>
+                    <td>Only when authenticated requests to trusted domains are required</td>
+                </tr>
+            </table>
+            
+            <h3>Broader Protection Strategy</h3>
+            <p>The <code>crossorigin</code> attribute should be part of a comprehensive approach to cross-origin security:</p>
+            
+            <ul>
+                <li>Implement proper Content Security Policy (CSP) with frame-src directive</li>
+                <li>Use subresource integrity (SRI) for critical resources</li>
+                <li>Consider Cross-Origin Resource Policy (CORP) and Cross-Origin Opener Policy (COOP)</li>
+                <li>Use the sandbox attribute for iframes where appropriate</li>
+                <li>Implement proper referrer policy controls</li>
+            </ul>
+        </div>
+    </main>
+    
+    <div class="nav">
+        <a href="target-blank.html">Previous Test</a>
+        <a href="weak-referrer-policy.html">Next Test: Weak Referrer Policy</a>
+    </div>
+    
+    <footer>
+        <p>Pink Sock - IFrame Security Analyzer for Brave Browser</p>
+    </footer>
+</body>
+</html>

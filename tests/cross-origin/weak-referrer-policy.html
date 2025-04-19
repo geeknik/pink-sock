@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weak Referrer Policy - Pink Sock Test</title>
+    <link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <img src="../assets/logo.svg" alt="Pink Sock Logo">
+            <h1>Weak Referrer Policy</h1>
+        </div>
+        <div class="severity low">Low</div>
+    </header>
+    
+    <main>
+        <p class="description">
+            This test page demonstrates a security vulnerability where a cross-origin iframe has a weak or missing
+            referrer policy, potentially leaking sensitive information through the HTTP Referer header.
+        </p>
+        
+        <div class="vulnerability">
+            <strong>Security Issue:</strong> Cross-origin iframe with weak or missing referrer policy, which may 
+            leak sensitive URL parameters, paths, or origin information through the HTTP Referer header.
+        </div>
+        
+        <h2>Test Case</h2>
+        
+        <div class="test-container">
+            <div class="code-label">Vulnerable code:</div>
+            <pre><code>&lt;iframe 
+  src="https://example.com/iframe-content.html" 
+  crossorigin="anonymous"
+  width="100%" 
+  height="300"
+&gt;&lt;/iframe&gt;</code></pre>
+            
+            <p>Notice the absence of a <code>referrerpolicy</code> attribute, which means the default policy will be used.</p>
+            
+            <div class="iframe-container">
+                <!-- Using a simulated cross-origin iframe for the test -->
+                <iframe 
+                    src="../assets/iframe-content.html" 
+                    crossorigin="anonymous"
+                    width="100%" 
+                    height="300">
+                </iframe>
+                <p><small><em>Note: This is simulating a cross-origin iframe for testing purposes</em></small></p>
+            </div>
+        </div>
+        
+        <h2>Explanation</h2>
+        
+        <div class="explanation">
+            <p>When a webpage includes an iframe, the browser sends a Referer HTTP header to the embedded content's server, containing the URL of the parent page. Without a proper referrer policy, this can lead to privacy and security issues:</p>
+            
+            <ul>
+                <li>URL parameters might contain sensitive data (session tokens, user IDs, etc.)</li>
+                <li>Path information could reveal restricted content or site structure</li>
+                <li>Origin information could be used for targeted attacks</li>
+                <li>Referrer data can be used for cross-site tracking</li>
+                <li>Information leakage across HTTP/HTTPS boundaries</li>
+            </ul>
+            
+            <p>The default referrer policy in most browsers (<code>no-referrer-when-downgrade</code>) still sends significant information, especially when navigating between HTTPS resources.</p>
+            
+            <h3>How Pink Sock detects this issue:</h3>
+            <p>Pink Sock analyzes iframe elements with cross-origin src attributes and checks for the presence of a secure <code>referrerpolicy</code> attribute. When iframes load cross-origin content without a strict referrer policy, it flags it as a low-severity security issue.</p>
+            
+            <h3>How to fix:</h3>
+            <p>Add a strict <code>referrerpolicy</code> attribute to cross-origin iframes:</p>
+            
+            <pre><code>&lt;iframe 
+  src="https://example.com/iframe-content.html" 
+  crossorigin="anonymous"
+  referrerpolicy="no-referrer"
+  width="100%" 
+  height="300"
+&gt;&lt;/iframe&gt;</code></pre>
+            
+            <p>For maximum security, use <code>no-referrer</code> to completely prevent the Referer header from being sent. Other secure options include <code>same-origin</code> (only send referrer information for same-origin requests) or <code>strict-origin</code> (send only the origin for cross-origin requests, and only if the security level stays the same).</p>
+        </div>
+        
+        <h2>Additional Information</h2>
+        
+        <div class="test-detail">
+            <h3>Referrer Policy Options</h3>
+            <p>The <code>referrerpolicy</code> attribute accepts the following values, listed from most to least secure:</p>
+            
+            <table>
+                <tr>
+                    <th>Value</th>
+                    <th>Description</th>
+                    <th>Security Level</th>
+                </tr>
+                <tr>
+                    <td>no-referrer</td>
+                    <td>No Referer header is sent</td>
+                    <td>Highest</td>
+                </tr>
+                <tr>
+                    <td>same-origin</td>
+                    <td>Sends full URL for same-origin, nothing for cross-origin</td>
+                    <td>High</td>
+                </tr>
+                <tr>
+                    <td>strict-origin</td>
+                    <td>Sends only origin for cross-origin, and only if security level stays the same</td>
+                    <td>High</td>
+                </tr>
+                <tr>
+                    <td>strict-origin-when-cross-origin</td>
+                    <td>Sends full URL for same-origin, only origin for cross-origin, and only if security level stays the same</td>
+                    <td>Medium</td>
+                </tr>
+                <tr>
+                    <td>origin</td>
+                    <td>Sends only the origin part of the URL, regardless of same or cross-origin</td>
+                    <td>Medium</td>
+                </tr>
+                <tr>
+                    <td>origin-when-cross-origin</td>
+                    <td>Sends full URL for same-origin, only origin for cross-origin</td>
+                    <td>Medium</td>
+                </tr>
+                <tr>
+                    <td>no-referrer-when-downgrade (default)</td>
+                    <td>Sends full URL unless going from HTTPS to HTTP</td>
+                    <td>Low</td>
+                </tr>
+                <tr>
+                    <td>unsafe-url</td>
+                    <td>Always sends full URL, even for cross-origin and HTTPS-to-HTTP</td>
+                    <td>Lowest</td>
+                </tr>
+            </table>
+            
+            <h3>Page-Level Referrer Policy</h3>
+            <p>In addition to iframe-specific policies, you can set a site-wide referrer policy via meta tags or HTTP headers:</p>
+            
+            <pre><code>&lt;meta name="referrer" content="no-referrer"&gt;</code></pre>
+            
+            <p>Or via HTTP header:</p>
+            
+            <pre><code>Referrer-Policy: no-referrer</code></pre>
+            
+            <h3>Real-World Risk Scenario</h3>
+            <p>Consider a password reset page with a URL like:</p>
+            
+            <pre><code>https://your-site.com/reset-password?token=a1b2c3d4e5f6g7h8i9j0</code></pre>
+            
+            <p>If this page embeds a third-party iframe (like an analytics script or ad) without a proper referrer policy, the reset token could be leaked to the third party, potentially allowing account takeover.</p>
+            
+            <h3>Broader Protection Strategy</h3>
+            <p>A proper referrer policy should be combined with other security measures:</p>
+            
+            <ul>
+                <li>Avoid placing sensitive information in URLs</li>
+                <li>Implement proper Content Security Policy (CSP)</li>
+                <li>Use POST requests instead of GET for sensitive operations</li>
+                <li>Implement short-lived tokens for sensitive operations</li>
+                <li>Consider Cross-Origin Resource Policy (CORP) for additional protection</li>
+            </ul>
+        </div>
+    </main>
+    
+    <div class="nav">
+        <a href="missing-crossorigin.html">Previous Test</a>
+        <a href="../index.html">Back to Test Index</a>
+    </div>
+    
+    <footer>
+        <p>Pink Sock - IFrame Security Analyzer for Brave Browser</p>
+    </footer>
+</body>
+</html>

@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Risky Navigation - Pink Sock Test</title>
+    <link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <img src="../assets/logo.svg" alt="Pink Sock Logo">
+            <h1>Risky Navigation</h1>
+        </div>
+        <div class="severity medium">Medium</div>
+    </header>
+    
+    <main>
+        <p class="description">
+            This test page demonstrates a security vulnerability where an iframe is given permission to navigate the
+            top-level window without user activation through the <code>allow-top-navigation</code> sandbox directive,
+            which could enable clickjacking attacks.
+        </p>
+        
+        <div class="vulnerability">
+            <strong>Security Issue:</strong> IFrame with <code>allow-top-navigation</code> sandbox directive without 
+            <code>allow-top-navigation-by-user-activation</code>, allowing the iframe to navigate the top window
+            programmatically without requiring user interaction.
+        </div>
+        
+        <h2>Test Case</h2>
+        
+        <div class="test-container">
+            <div class="code-label">Vulnerable code:</div>
+            <pre><code>&lt;iframe 
+  src="../assets/iframe-content.html" 
+  sandbox="allow-scripts allow-top-navigation"
+  width="100%" 
+  height="300"
+&gt;&lt;/iframe&gt;</code></pre>
+            
+            <div class="iframe-container">
+                <iframe 
+                    src="../assets/iframe-content.html" 
+                    sandbox="allow-scripts allow-top-navigation"
+                    width="100%" 
+                    height="300">
+                </iframe>
+            </div>
+        </div>
+        
+        <h2>Explanation</h2>
+        
+        <div class="explanation">
+            <p>The <code>allow-top-navigation</code> sandbox directive allows an iframe to navigate the top-level window to any URL. This creates significant security risks:</p>
+            
+            <ul>
+                <li>Iframes can redirect the entire page without user interaction</li>
+                <li>Malicious iframes could redirect users to phishing sites</li>
+                <li>Users may not realize they've been redirected to a different domain</li>
+                <li>This capability enables sophisticated clickjacking and redirection attacks</li>
+            </ul>
+            
+            <p>The risk is compounded when combined with <code>allow-scripts</code>, as JavaScript can execute navigation programmatically without any user interaction.</p>
+            
+            <h3>How Pink Sock detects this issue:</h3>
+            <p>Pink Sock analyzes the sandbox attribute on iframe elements and flags the presence of <code>allow-top-navigation</code> 
+            without <code>allow-top-navigation-by-user-activation</code> as a medium-severity security issue, especially when 
+            combined with <code>allow-scripts</code>.</p>
+            
+            <h3>How to fix:</h3>
+            <p>There are several approaches to mitigate this risk:</p>
+            
+            <ol>
+                <li>Use <code>allow-top-navigation-by-user-activation</code> instead, which requires user interaction before navigation</li>
+                <li>Remove top navigation permissions entirely if not required</li>
+                <li>Implement proper Content Security Policy (CSP) with frame-ancestors directive</li>
+            </ol>
+            
+            <pre><code>&lt;iframe 
+  src="../assets/iframe-content.html" 
+  sandbox="allow-scripts allow-top-navigation-by-user-activation"
+  width="100%" 
+  height="300"
+&gt;&lt;/iframe&gt;</code></pre>
+            
+            <p>This ensures that navigation can only occur after explicit user interaction, such as clicking a link, reducing the risk of silent redirects.</p>
+        </div>
+        
+        <h2>Additional Information</h2>
+        
+        <div class="test-detail">
+            <h3>Sandbox Navigation Values</h3>
+            <p>The sandbox attribute provides several navigation-related values:</p>
+            
+            <table>
+                <tr>
+                    <th>Value</th>
+                    <th>Description</th>
+                    <th>Security Risk</th>
+                </tr>
+                <tr>
+                    <td>allow-top-navigation</td>
+                    <td>Allows navigation of the top-level window</td>
+                    <td>High</td>
+                </tr>
+                <tr>
+                    <td>allow-top-navigation-by-user-activation</td>
+                    <td>Allows navigation only after user interaction</td>
+                    <td>Medium</td>
+                </tr>
+                <tr>
+                    <td>allow-top-navigation-to-custom-protocols</td>
+                    <td>Allows navigation to custom protocol handlers</td>
+                    <td>High</td>
+                </tr>
+            </table>
+            
+            <h3>Real-World Attack Scenario</h3>
+            <p>A malicious iframe with allow-top-navigation could:</p>
+            <ol>
+                <li>Be embedded in a legitimate website through an XSS vulnerability or compromised third-party content</li>
+                <li>Wait for the user to enter sensitive information on the legitimate site</li>
+                <li>Silently redirect the top window to a visually identical phishing site</li>
+                <li>Capture credentials entered by the user who believes they're still on the legitimate site</li>
+            </ol>
+            
+            <h3>Defense in Depth</h3>
+            <p>In addition to proper sandbox restrictions, consider implementing:</p>
+            <ul>
+                <li>Content Security Policy with frame-src and frame-ancestors directives</li>
+                <li>X-Frame-Options headers to control framing</li>
+                <li>Subresource Integrity (SRI) for third-party resources</li>
+                <li>Regular security audits of embedded content</li>
+            </ul>
+        </div>
+    </main>
+    
+    <div class="nav">
+        <a href="sandbox-bypass.html">Previous Test</a>
+        <a href="form-script-risk.html">Next Test: Form & Script Combinations</a>
+    </div>
+    
+    <footer>
+        <p>Pink Sock - IFrame Security Analyzer for Brave Browser</p>
+    </footer>
+</body>
+</html>

@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Secure Content Security Policy - Pink Sock Test</title>
+    <link rel="stylesheet" href="../assets/style.css">
+    <!-- Secure Content Security Policy -->
+    <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; connect-src 'self'; img-src 'self'; style-src 'self'; font-src 'self'; frame-src 'self'; frame-ancestors 'self'; form-action 'self'; base-uri 'self'; object-src 'none'; report-uri /csp-report">
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <img src="../assets/logo.svg" alt="Pink Sock Logo">
+            <h1>Secure Content Security Policy</h1>
+        </div>
+        <div class="severity" style="background-color: #4CAF50; color: white;">Secure</div>
+    </header>
+    
+    <main>
+        <p class="description">
+            This page demonstrates a comprehensive, secure Content Security Policy (CSP) implementation that effectively 
+            protects against various web vulnerabilities, particularly those related to iframes and content embedding.
+            Pink Sock should not detect any security issues with this implementation.
+        </p>
+        
+        <div class="explanation" style="background-color: #e6f7ed;">
+            <strong>Security Features:</strong> This page implements a robust Content Security Policy with strict frame controls,
+            script restrictions, and comprehensive protection against XSS, clickjacking, and other common web vulnerabilities.
+        </div>
+        
+        <h2>Secure Example</h2>
+        
+        <div class="test-container">
+            <div class="code-label">Secure CSP code:</div>
+            <pre><code>&lt;meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; connect-src 'self'; img-src 'self'; style-src 'self'; font-src 'self'; frame-src 'self'; frame-ancestors 'self'; form-action 'self'; base-uri 'self'; object-src 'none'; report-uri /csp-report"&gt;</code></pre>
+            
+            <div class="iframe-container">
+                <iframe 
+                    src="../assets/iframe-content.html" 
+                    sandbox="allow-scripts allow-forms"
+                    width="100%" 
+                    height="200">
+                </iframe>
+            </div>
+        </div>
+        
+        <h2>Security Features Explained</h2>
+        
+        <div class="test-detail">
+            <h3>Default Deny Approach</h3>
+            <p>This CSP follows the principle of "default deny" with <code>default-src 'none'</code>, which means nothing is allowed unless explicitly permitted. This ensures that any content types not specifically mentioned are blocked.</p>
+            
+            <h3>Critical CSP Directives</h3>
+            <table>
+                <tr>
+                    <th>Directive</th>
+                    <th>Value</th>
+                    <th>Security Benefit</th>
+                </tr>
+                <tr>
+                    <td>script-src</td>
+                    <td>'self'</td>
+                    <td>Only allows scripts from the same origin, blocking inline scripts and third-party scripts</td>
+                </tr>
+                <tr>
+                    <td>frame-src</td>
+                    <td>'self'</td>
+                    <td>Only allows iframes loading content from the same origin</td>
+                </tr>
+                <tr>
+                    <td>frame-ancestors</td>
+                    <td>'self'</td>
+                    <td>Only allows the page to be framed by pages from the same origin, preventing clickjacking</td>
+                </tr>
+                <tr>
+                    <td>object-src</td>
+                    <td>'none'</td>
+                    <td>Blocks all plugins and embedded objects, which can be security risks</td>
+                </tr>
+                <tr>
+                    <td>base-uri</td>
+                    <td>'self'</td>
+                    <td>Prevents attackers from changing the base URL, which could redirect relative paths</td>
+                </tr>
+                <tr>
+                    <td>form-action</td>
+                    <td>'self'</td>
+                    <td>Only allows forms to submit to the same origin, preventing cross-site data leakage</td>
+                </tr>
+            </table>
+            
+            <h3>CSP Violation Reporting</h3>
+            <p>The policy includes a <code>report-uri</code> directive, which sends violation reports to a specified endpoint. This provides valuable information about potential attacks and unintended CSP violations for continuous security improvement.</p>
+            
+            <h3>No 'unsafe-inline' or 'unsafe-eval'</h3>
+            <p>The policy does not include the dangerous <code>'unsafe-inline'</code> or <code>'unsafe-eval'</code> directives, which would weaken protection against XSS attacks. Instead, only same-origin scripts are allowed.</p>
+            
+            <h3>Defense in Depth Strategy</h3>
+            <p>This CSP is part of a defense in depth strategy that includes:</p>
+            <ul>
+                <li>Content Security Policy for broad protection</li>
+                <li>Proper iframe sandboxing for embedded content</li>
+                <li>Restricted resource loading patterns</li>
+                <li>Careful control of script execution contexts</li>
+            </ul>
+        </div>
+        
+        <h2>Implementation Best Practices</h2>
+        
+        <div class="test-detail">
+            <h3>Incremental Deployment</h3>
+            <p>When implementing a strict CSP like this one, consider these steps:</p>
+            
+            <ol>
+                <li><strong>Start with Report-Only Mode:</strong></li>
+            </ol>
+            
+            <pre><code>Content-Security-Policy-Report-Only: default-src 'none'; script-src 'self';...</code></pre>
+            
+            <ol start="2">
+                <li><strong>Collect and analyze violation reports</strong></li>
+                <li><strong>Adjust policy to address legitimate use cases</strong></li>
+                <li><strong>Progressively tighten the policy</strong></li>
+                <li><strong>Move from report-only to enforcement mode</strong></li>
+            </ol>
+            
+            <h3>Handling Legacy Requirements</h3>
+            <p>If inline scripts or third-party resources are absolutely required:</p>
+            
+            <ul>
+                <li>Use nonces for necessary inline scripts: <code>script-src 'self' 'nonce-RandomValue'</code></li>
+                <li>Use hashes for static inline code: <code>script-src 'self' 'sha256-HashValue'</code></li>
+                <li>Explicitly whitelist trusted external domains rather than allowing all</li>
+                <li>Use <code>strict-dynamic</code> for script loading in modern browsers</li>
+            </ul>
+            
+            <h3>CSP Header vs. Meta Tag</h3>
+            <p>While this example uses a meta tag, the preferred approach is to deliver CSP via HTTP headers:</p>
+            
+            <pre><code>Content-Security-Policy: default-src 'none'; script-src 'self'; connect-src 'self';...</code></pre>
+            
+            <p>HTTP headers cannot be bypassed if an attacker manages to inject content into the page.</p>
+            
+            <h3>Additional Security Headers</h3>
+            <p>For maximum security, complement CSP with these headers:</p>
+            
+            <pre><code>X-Content-Type-Options: nosniff
+Referrer-Policy: strict-origin-when-cross-origin
+Permissions-Policy: geolocation=(), camera=(), microphone=()
+Strict-Transport-Security: max-age=31536000; includeSubDomains</code></pre>
+        </div>
+    </main>
+    
+    <div class="nav">
+        <a href="secure-iframe.html">Previous Test</a>
+        <a href="../index.html">Back to Test Index</a>
+    </div>
+    
+    <footer>
+        <p>Pink Sock - IFrame Security Analyzer for Brave Browser</p>
+    </footer>
+</body>
+</html>

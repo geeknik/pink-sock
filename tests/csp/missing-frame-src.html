@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Missing frame-src Directive - Pink Sock Test</title>
+    <link rel="stylesheet" href="../assets/style.css">
+    <!-- CSP without frame-src directive -->
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; frame-ancestors 'self';">
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <img src="../assets/logo.svg" alt="Pink Sock Logo">
+            <h1>Missing frame-src Directive</h1>
+        </div>
+        <div class="severity medium">Medium</div>
+    </header>
+    
+    <main>
+        <p class="description">
+            This test page demonstrates a security vulnerability where a Content Security Policy (CSP) is implemented
+            but lacks the <code>frame-src</code> directive, which is important for controlling which sources can be
+            loaded in iframes.
+        </p>
+        
+        <div class="vulnerability">
+            <strong>Security Issue:</strong> Content Security Policy is missing the <code>frame-src</code> (or equivalent <code>default-src</code>) 
+            directive to control which sources can be loaded in iframes, potentially allowing untrusted content to be embedded.
+        </div>
+        
+        <h2>Test Case</h2>
+        
+        <div class="test-container">
+            <div class="code-label">Vulnerable code:</div>
+            <pre><code>&lt;meta http-equiv="Content-Security-Policy" content="script-src 'self'; style-src 'self'; frame-ancestors 'self';"&gt;</code></pre>
+            
+            <p>This CSP controls script and style sources and prevents the page from being framed, but doesn't restrict which sources can be loaded in iframes on the page itself.</p>
+            
+            <div class="iframe-container">
+                <iframe src="../assets/iframe-content.html" width="100%" height="200"></iframe>
+            </div>
+        </div>
+        
+        <h2>Explanation</h2>
+        
+        <div class="explanation">
+            <p>The <code>frame-src</code> directive in Content Security Policy controls which URLs can be loaded in frames, iframes, and other embedded content. Without this directive (or a <code>default-src</code> that would apply to frames), a page may be vulnerable to:</p>
+            
+            <ul>
+                <li>Loading potentially malicious content from untrusted sources</li>
+                <li>Unauthorized data access across origins</li>
+                <li>UI redressing attacks through embedded content</li>
+                <li>Loading content that may violate the intended security posture of the application</li>
+            </ul>
+            
+            <p>While <code>frame-ancestors</code> protects against clickjacking by controlling who can embed your page, <code>frame-src</code> controls what content your page can embed, addressing a different security concern.</p>
+            
+            <h3>How Pink Sock detects this issue:</h3>
+            <p>Pink Sock analyzes CSP headers and meta tags for the presence of either a <code>frame-src</code> directive or a <code>default-src</code> directive that would apply to frame sources. When a CSP exists but lacks both of these controls while iframes are present on the page, it flags it as a medium-severity security issue.</p>
+            
+            <h3>How to fix:</h3>
+            <p>Add the <code>frame-src</code> directive to your Content Security Policy:</p>
+            
+            <pre><code>&lt;meta http-equiv="Content-Security-Policy" content="default-src 'self'; frame-src 'self' https://trusted-source.com; frame-ancestors 'self'; script-src 'self'; style-src 'self';"&gt;</code></pre>
+            
+            <p>For most applications, restricting frame sources to 'self' and specific trusted domains is appropriate. If you don't need iframes from external sources, a restrictive policy is best:</p>
+            
+            <pre><code>frame-src 'self';</code></pre>
+            
+            <p>If you need to completely disallow iframes, you can use:</p>
+            
+            <pre><code>frame-src 'none';</code></pre>
+        </div>
+        
+        <h2>Additional Information</h2>
+        
+        <div class="test-detail">
+            <h3>CSP Inheritance and Fallbacks</h3>
+            <p>Understanding CSP directive inheritance is important:</p>
+            
+            <ul>
+                <li>If <code>frame-src</code> is not specified, the browser falls back to <code>child-src</code></li>
+                <li>If <code>child-src</code> is not specified, the browser falls back to <code>default-src</code></li>
+                <li>If neither is specified, there are no restrictions on iframe sources</li>
+            </ul>
+            
+            <p>Due to this fallback behavior, having a <code>default-src 'self';</code> would provide some protection, but explicit <code>frame-src</code> is preferred for clarity and precision.</p>
+            
+            <h3>Source List Syntax</h3>
+            <p>The <code>frame-src</code> directive accepts a variety of values:</p>
+            
+            <table>
+                <tr>
+                    <th>Value</th>
+                    <th>Description</th>
+                    <th>Example</th>
+                </tr>
+                <tr>
+                    <td>'self'</td>
+                    <td>Same origin as the page</td>
+                    <td>frame-src 'self';</td>
+                </tr>
+                <tr>
+                    <td>'none'</td>
+                    <td>No sources allowed</td>
+                    <td>frame-src 'none';</td>
+                </tr>
+                <tr>
+                    <td>domain.com</td>
+                    <td>Specific domain</td>
+                    <td>frame-src example.com;</td>
+                </tr>
+                <tr>
+                    <td>https:</td>
+                    <td>Any HTTPS URL</td>
+                    <td>frame-src https:;</td>
+                </tr>
+                <tr>
+                    <td>Multiple values</td>
+                    <td>Multiple allowed sources</td>
+                    <td>frame-src 'self' trusted.com;</td>
+                </tr>
+            </table>
+            
+            <h3>Testing CSP Effectiveness</h3>
+            <p>To verify your CSP implementation:</p>
+            
+            <ol>
+                <li>Use CSP validation tools like the one at <a href="https://csp-evaluator.withgoogle.com/" target="_blank">CSP Evaluator</a></li>
+                <li>Implement CSP reporting to collect violation data</li>
+                <li>Test with deliberately non-compliant resources to confirm enforcement</li>
+                <li>Monitor CSP violations in your browser's developer console</li>
+            </ol>
+        </div>
+    </main>
+    
+    <div class="nav">
+        <a href="missing-csp.html">Previous Test</a>
+        <a href="unsafe-inline.html">Next Test: Unsafe Inline Scripts</a>
+    </div>
+    
+    <footer>
+        <p>Pink Sock - IFrame Security Analyzer for Brave Browser</p>
+    </footer>
+</body>
+</html>
