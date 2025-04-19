@@ -20,7 +20,7 @@ Pink Sock is a Brave browser extension that analyzes web pages for improper sand
 
 1. Clone this repository:
    ```
-   git clone https://github.com/yourusername/pink-sock.git
+   git clone https://github.com/geeknik/pink-sock.git
    cd pink-sock
    ```
 
