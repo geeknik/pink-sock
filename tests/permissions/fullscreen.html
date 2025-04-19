@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fullscreen Permission - Pink Sock Test</title>
+    <link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <img src="../assets/logo.svg" alt="Pink Sock Logo">
+            <h1>Fullscreen Permission</h1>
+        </div>
+        <div class="severity low">Low</div>
+    </header>
+    
+    <main>
+        <p class="description">
+            This test page demonstrates a potential security vulnerability where an iframe is allowed to enter fullscreen mode
+            using the <code>allowfullscreen</code> attribute, which could be used for phishing attacks.
+        </p>
+        
+        <div class="vulnerability">
+            <strong>Security Issue:</strong> IFrame with <code>allowfullscreen</code> attribute that enables the content to 
+            enter fullscreen mode, which could be used for convincing phishing attacks by mimicking browser or OS UI.
+        </div>
+        
+        <h2>Test Case</h2>
+        
+        <div class="test-container">
+            <div class="code-label">Vulnerable code:</div>
+            <pre><code>&lt;iframe 
+  src="../assets/iframe-content.html" 
+  allowfullscreen
+  width="100%" 
+  height="300"
+&gt;&lt;/iframe&gt;</code></pre>
+            
+            <div class="iframe-container">
+                <iframe 
+                    src="../assets/iframe-content.html" 
+                    allowfullscreen
+                    width="100%" 
+                    height="300">
+                </iframe>
+            </div>
+        </div>
+        
+        <h2>Explanation</h2>
+        
+        <div class="explanation">
+            <p>The <code>allowfullscreen</code> attribute enables embedded content to use the Fullscreen API to take over the entire screen. While this is necessary for legitimate uses like video players, it presents security risks, especially for untrusted content:</p>
+            
+            <ul>
+                <li>Fullscreen content can mimic browser UI elements like address bars, security indicators, or prompts</li>
+                <li>Users may not realize they're interacting with embedded content rather than trusted system UI</li>
+                <li>Phishing attacks could trick users into entering credentials or sensitive information</li>
+                <li>Content could display misleading security indicators to create false trust</li>
+            </ul>
+            
+            <p>Modern browsers do show a notification when content enters fullscreen mode, but users may dismiss or miss this indication.</p>
+            
+            <h3>How Pink Sock detects this issue:</h3>
+            <p>Pink Sock scans for iframe elements with the <code>allowfullscreen</code> attribute and flags them as a potential security risk, especially when combined with other risk factors like missing sandbox attributes or cross-origin content.</p>
+            
+            <h3>How to fix:</h3>
+            <p>Consider these approaches to mitigate the risk:</p>
+            
+            <ol>
+                <li>Only add <code>allowfullscreen</code> when absolutely necessary for functionality</li>
+                <li>Use proper sandboxing alongside fullscreen permissions</li>
+                <li>Only enable fullscreen for trusted content sources</li>
+                <li>Educate users about fullscreen security indicators</li>
+            </ol>
+            
+            <p>If fullscreen is necessary, combine it with appropriate protections:</p>
+            
+            <pre><code>&lt;iframe 
+  src="../assets/iframe-content.html" 
+  allowfullscreen
+  sandbox="allow-scripts allow-forms allow-same-origin"
+  width="100%" 
+  height="300"
+&gt;&lt;/iframe&gt;</code></pre>
+            
+            <p>Remember that allowing scripts and same-origin together in sandbox can defeat sandbox protections, so evaluate the full security context.</p>
+        </div>
+        
+        <h2>Additional Information</h2>
+        
+        <div class="test-detail">
+            <h3>Modern Alternatives</h3>
+            <p>The <code>allowfullscreen</code> attribute is considered a legacy approach. The modern approach is to use the Feature Policy through the <code>allow</code> attribute:</p>
+            
+            <pre><code>&lt;iframe 
+  src="../assets/iframe-content.html" 
+  allow="fullscreen"
+  width="100%" 
+  height="300"
+&gt;&lt;/iframe&gt;</code></pre>
+            
+            <p>This provides more control and can be combined with other feature policies in a single attribute.</p>
+            
+            <h3>Real-World Attack Scenario</h3>
+            <p>A malicious site could:</p>
+            <ol>
+                <li>Create an iframe with allowfullscreen</li>
+                <li>Wait for user interaction to trigger fullscreen programmatically</li>
+                <li>Display a perfect replica of a bank's login page with the correct URL in a fake browser UI</li>
+                <li>Capture entered credentials when the user attempts to log in</li>
+                <li>Exit fullscreen mode and redirect to the real site, making the attack difficult to detect</li>
+            </ol>
+            
+            <h3>Browser Security Indicators</h3>
+            <p>While browsers do show notifications when content enters fullscreen mode:</p>
+            <ul>
+                <li>Chrome shows a transient notification that fades away</li>
+                <li>Firefox shows a persistent indication that "This page is in fullscreen mode"</li>
+                <li>Safari shows a brief approval dialog before entering fullscreen</li>
+            </ul>
+            <p>These protections help but may not be sufficient for all users, especially those unfamiliar with these security indicators.</p>
+        </div>
+    </main>
+    
+    <div class="nav">
+        <a href="risky-features.html">Previous Test</a>
+        <a href="payment.html">Next Test: Payment Request Permission</a>
+    </div>
+    
+    <footer>
+        <p>Pink Sock - IFrame Security Analyzer for Brave Browser</p>
+    </footer>
+</body>
+</html>

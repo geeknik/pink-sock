@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Risky Feature Permissions - Pink Sock Test</title>
+    <link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <img src="../assets/logo.svg" alt="Pink Sock Logo">
+            <h1>Risky Feature Permissions</h1>
+        </div>
+        <div class="severity medium">Medium</div>
+    </header>
+    
+    <main>
+        <p class="description">
+            This test page demonstrates a security vulnerability where an iframe is granted access to powerful 
+            browser features like camera, microphone, geolocation, and other potentially sensitive capabilities.
+        </p>
+        
+        <div class="vulnerability">
+            <strong>Security Issue:</strong> IFrame with the <code>allow</code> attribute granting overly permissive access
+            to sensitive browser features like camera, microphone, and geolocation, which increases the attack surface.
+        </div>
+        
+        <h2>Test Case</h2>
+        
+        <div class="test-container">
+            <div class="code-label">Vulnerable code:</div>
+            <pre><code>&lt;iframe 
+  src="../assets/iframe-content.html" 
+  allow="camera; microphone; geolocation; display-capture; autoplay"
+  width="100%" 
+  height="300"
+&gt;&lt;/iframe&gt;</code></pre>
+            
+            <div class="iframe-container">
+                <iframe 
+                    src="../assets/iframe-content.html" 
+                    allow="camera; microphone; geolocation; display-capture; autoplay"
+                    width="100%" 
+                    height="300">
+                </iframe>
+            </div>
+        </div>
+        
+        <h2>Explanation</h2>
+        
+        <div class="explanation">
+            <p>The <code>allow</code> attribute is used to control which features are available to an iframe through the Permissions Policy. Granting sensitive permissions to untrusted iframes creates security and privacy risks:</p>
+            
+            <ul>
+                <li><strong>camera/microphone:</strong> Could be used to spy on users and capture sensitive information</li>
+                <li><strong>geolocation:</strong> Can track a user's physical location without clear indication</li>
+                <li><strong>display-capture:</strong> Could capture user's screen content, including sensitive information</li>
+                <li><strong>autoplay:</strong> Can play potentially disruptive or misleading audio/video without user consent</li>
+            </ul>
+            
+            <p>These permissions should only be granted when absolutely necessary and with proper user consent, especially for third-party content.</p>
+            
+            <h3>How Pink Sock detects this issue:</h3>
+            <p>Pink Sock analyzes the <code>allow</code> attribute on iframe elements and flags potentially risky features, especially when granted to cross-origin iframes or without additional security measures.</p>
+            
+            <h3>How to fix:</h3>
+            <p>There are several approaches to mitigate this risk:</p>
+            
+            <ol>
+                <li>Only grant necessary permissions, following the principle of least privilege</li>
+                <li>Use empty parameter lists to block features completely</li>
+                <li>Add user activation requirements</li>
+                <li>Implement proper sandboxing alongside these permissions</li>
+            </ol>
+            
+            <pre><code>&lt;iframe 
+  src="../assets/iframe-content.html" 
+  allow="camera=(); microphone=(); geolocation=(); display-capture=()"
+  sandbox="allow-scripts allow-forms"
+  width="100%" 
+  height="300"
+&gt;&lt;/iframe&gt;</code></pre>
+            
+            <p>The empty parentheses <code>()</code> explicitly block the feature, which is more secure than omitting it entirely.</p>
+        </div>
+        
+        <h2>Additional Information</h2>
+        
+        <div class="test-detail">
+            <h3>Feature Policy Syntax</h3>
+            <p>The <code>allow</code> attribute accepts the following syntax variations:</p>
+            
+            <ul>
+                <li><code>feature-name</code> - Allows the feature for the iframe and same-origin child frames</li>
+                <li><code>feature-name 'self'</code> - Allows the feature only for the iframe and same-origin child frames</li>
+                <li><code>feature-name 'src'</code> - Allows the feature only for the specific origin of the iframe's src</li>
+                <li><code>feature-name 'none'</code> - Disallows the feature for all frames</li>
+                <li><code>feature-name=()</code> - Explicitly disallows the feature (preferred way to block)</li>
+                <li><code>feature-name=(self)</code> - Same as 'self' but in parameter list syntax</li>
+            </ul>
+            
+            <h3>High-Risk Features</h3>
+            <p>The following features are considered particularly sensitive:</p>
+            
+            <table>
+                <tr>
+                    <th>Feature</th>
+                    <th>Risk</th>
+                    <th>Recommendation</th>
+                </tr>
+                <tr>
+                    <td>camera</td>
+                    <td>High</td>
+                    <td>Block or require user gesture</td>
+                </tr>
+                <tr>
+                    <td>microphone</td>
+                    <td>High</td>
+                    <td>Block or require user gesture</td>
+                </tr>
+                <tr>
+                    <td>geolocation</td>
+                    <td>High</td>
+                    <td>Block or require user gesture</td>
+                </tr>
+                <tr>
+                    <td>display-capture</td>
+                    <td>High</td>
+                    <td>Block in most cases</td>
+                </tr>
+                <tr>
+                    <td>midi</td>
+                    <td>Medium</td>
+                    <td>Block if not needed</td>
+                </tr>
+                <tr>
+                    <td>payment</td>
+                    <td>High</td>
+                    <td>Block if not needed</td>
+                </tr>
+                <tr>
+                    <td>idle-detection</td>
+                    <td>Medium</td>
+                    <td>Block if not needed</td>
+                </tr>
+            </table>
+        </div>
+    </main>
+    
+    <div class="nav">
+        <a href="../index.html">Back to Test Index</a>
+        <a href="fullscreen.html">Next Test: Fullscreen Permission</a>
+    </div>
+    
+    <footer>
+        <p>Pink Sock - IFrame Security Analyzer for Brave Browser</p>
+    </footer>
+</body>
+</html>

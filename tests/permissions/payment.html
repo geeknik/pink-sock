@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment Request Permission - Pink Sock Test</title>
+    <link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <img src="../assets/logo.svg" alt="Pink Sock Logo">
+            <h1>Payment Request Permission</h1>
+        </div>
+        <div class="severity medium">Medium</div>
+    </header>
+    
+    <main>
+        <p class="description">
+            This test page demonstrates a security vulnerability where an iframe is granted access to the 
+            Payment Request API via the <code>allowpaymentrequest</code> attribute, which increases the attack surface
+            and could potentially lead to financial fraud.
+        </p>
+        
+        <div class="vulnerability">
+            <strong>Security Issue:</strong> IFrame with <code>allowpaymentrequest</code> attribute that enables the content to 
+            access sensitive payment capabilities and potentially initiate payment requests without sufficient context or security.
+        </div>
+        
+        <h2>Test Case</h2>
+        
+        <div class="test-container">
+            <div class="code-label">Vulnerable code:</div>
+            <pre><code>&lt;iframe 
+  src="../assets/iframe-content.html" 
+  allowpaymentrequest
+  width="100%" 
+  height="300"
+&gt;&lt;/iframe&gt;</code></pre>
+            
+            <div class="iframe-container">
+                <iframe 
+                    src="../assets/iframe-content.html" 
+                    allowpaymentrequest
+                    width="100%" 
+                    height="300">
+                </iframe>
+            </div>
+        </div>
+        
+        <h2>Explanation</h2>
+        
+        <div class="explanation">
+            <p>The <code>allowpaymentrequest</code> attribute enables embedded content to use the Payment Request API, which provides a standardized way to handle payments on the web. This presents several security concerns:</p>
+            
+            <ul>
+                <li>Iframes could initiate payment requests that appear to come from the parent page</li>
+                <li>Users may not realize they're authorizing a payment to a third-party rather than the site they're visiting</li>
+                <li>Malicious content could potentially trick users into authorizing payments under false pretenses</li>
+                <li>The payment API increases the overall attack surface of the application</li>
+            </ul>
+            
+            <p>Payment capabilities should only be granted to fully trusted and secure content.</p>
+            
+            <h3>How Pink Sock detects this issue:</h3>
+            <p>Pink Sock scans for iframe elements with the <code>allowpaymentrequest</code> attribute and flags them as a security risk, especially when combined with other vulnerabilities like missing sandbox protections or when loading cross-origin content.</p>
+            
+            <h3>How to fix:</h3>
+            <p>Consider these approaches to mitigate the risk:</p>
+            
+            <ol>
+                <li>Only add <code>allowpaymentrequest</code> when absolutely necessary for payment functionality</li>
+                <li>Only enable payment requests for trusted and verified content sources</li>
+                <li>Use proper sandboxing alongside payment permissions</li>
+                <li>Consider handling payments in the parent page instead of delegating to iframes</li>
+                <li>Implement additional verification steps before payment processing</li>
+            </ol>
+            
+            <p>If payment capability is necessary, combine it with appropriate protections:</p>
+            
+            <pre><code>&lt;iframe 
+  src="../assets/iframe-content.html" 
+  sandbox="allow-scripts allow-forms allow-same-origin allow-payment-request"
+  width="100%" 
+  height="300"
+&gt;&lt;/iframe&gt;</code></pre>
+            
+            <p>Note that you must also add <code>allow-payment-request</code> to the sandbox attribute if you're using sandboxing with payment requests.</p>
+        </div>
+        
+        <h2>Additional Information</h2>
+        
+        <div class="test-detail">
+            <h3>Modern Alternatives</h3>
+            <p>Similar to fullscreen, the <code>allowpaymentrequest</code> attribute is considered legacy. The modern approach is to use the Feature Policy through the <code>allow</code> attribute:</p>
+            
+            <pre><code>&lt;iframe 
+  src="../assets/iframe-content.html" 
+  allow="payment"
+  width="100%" 
+  height="300"
+&gt;&lt;/iframe&gt;</code></pre>
+            
+            <p>This provides more control and can be combined with other feature policies in a single attribute.</p>
+            
+            <h3>Payment Request API Security Context</h3>
+            <p>The Payment Request API is designed with several security considerations:</p>
+            <ul>
+                <li>It only works in secure contexts (HTTPS)</li>
+                <li>Browsers often require user interaction before allowing payment requests</li>
+                <li>The API provides clear disclosure about what is being purchased and from whom</li>
+            </ul>
+            <p>However, these protections don't fully mitigate the risks of enabling payment capabilities in untrusted iframes.</p>
+            
+            <h3>Risk Factors for Payment Requests</h3>
+            <p>The risk level increases significantly when payment capabilities are combined with:</p>
+            <ul>
+                <li>Cross-origin content from untrusted sources</li>
+                <li>Missing or insufficient sandbox protections</li>
+                <li>Ability to modify parent page content</li>
+                <li>Insufficient user education about payment authorization</li>
+                <li>Misleading context or urgency that rushes users through payment confirmation</li>
+            </ul>
+            
+            <p>Financial capability should always be treated as high-risk and implemented with multiple layers of protection.</p>
+        </div>
+    </main>
+    
+    <div class="nav">
+        <a href="fullscreen.html">Previous Test</a>
+        <a href="../index.html">Back to Test Index</a>
+    </div>
+    
+    <footer>
+        <p>Pink Sock - IFrame Security Analyzer for Brave Browser</p>
+    </footer>
+</body>
+</html>
