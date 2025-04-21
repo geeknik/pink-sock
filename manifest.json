@@ -36,7 +36,6 @@
     "48": "assets/icons/icon48.png",
     "128": "assets/icons/icon128.png"
   },
-  "devtools_page": "src/devtools/devtools.html",
   "options_ui": {
     "page": "src/options.html",
     "open_in_tab": true
@@ -44,8 +43,7 @@
   "web_accessible_resources": [
     {
       "resources": [
-        "assets/**/*",
-        "src/**/*"
+        "assets/icons/*.png"
       ],
       "matches": ["<all_urls>"]
     }

@@ -61,6 +61,7 @@
   <div class="actions">
     <button id="scan-btn">Scan Again</button>
     <button id="details-btn">Open Detailed Report</button>
+    <button id="bug-report-btn">Generate Bug Report</button>
     <button id="settings-btn">Settings</button>
   </div>
   
@@ -70,5 +71,38 @@
   </footer>
   
   <script src="popup.js"></script>
+  
+  <!-- Detailed report modal -->
+  <div id="detail-modal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>Detailed Security Report</h2>
+        <span class="close-modal">&times;</span>
+      </div>
+      <div class="modal-body">
+        <div id="detail-content">
+          <!-- Detailed findings will be added here -->
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Bug bounty report modal -->
+  <div id="bug-report-modal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>Bug Bounty Report</h2>
+        <span class="close-bug-modal">&times;</span>
+      </div>
+      <div class="modal-body">
+        <div id="bug-report-content">
+          <!-- Bug report template will be added here -->
+        </div>
+        <div class="modal-actions">
+          <button id="copy-report-btn">Copy Report</button>
+        </div>
+      </div>
+    </div>
+  </div>
 </body>
 </html>

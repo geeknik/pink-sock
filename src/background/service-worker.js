@@ -90,8 +90,9 @@ function setupListeners() {
         break;
       
       case 'OPEN_DEVTOOLS_PANEL':
-        console.log("Request to open devtools panel for tab", message.tabId);
-        sendResponse({ status: 'success', message: 'Request received. Please open DevTools manually.' });
+        // For backward compatibility, handle this the same as GET_RESULTS
+        console.log("Request for detailed report (formerly DevTools panel) for tab", message.tabId);
+        handleGetResults(message.tabId, sendResponse);
         break;
       
       default:

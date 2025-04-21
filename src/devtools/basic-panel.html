@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Pink Sock Analysis</title>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      margin: 0;
+      padding: 20px;
+      color: #333;
+    }
+    
+    h1 {
+      color: #FF69B4;
+      margin-bottom: 20px;
+      font-size: 24px;
+    }
+    
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+    }
+    
+    .status {
+      padding: 15px;
+      background-color: #f5f5f5;
+      border-left: 4px solid #FF69B4;
+      margin-bottom: 20px;
+    }
+    
+    .info-box {
+      background-color: #e6f7ed;
+      border: 1px solid #00CC00;
+      padding: 15px;
+      border-radius: 4px;
+      margin-bottom: 20px;
+    }
+    
+    button {
+      background-color: #FF69B4;
+      color: white;
+      border: none;
+      padding: 10px 15px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 14px;
+    }
+    
+    button:hover {
+      background-color: #D6568F;
+    }
+    
+    .finding {
+      padding: 10px;
+      margin-bottom: 10px;
+      border-left: 4px solid #FF69B4;
+      background-color: #f9f9f9;
+    }
+    
+    .finding-title {
+      font-weight: bold;
+      margin-bottom: 5px;
+    }
+    
+    .severity-high {
+      color: #FF8800;
+    }
+    
+    .severity-medium {
+      color: #FFCC00;
+    }
+    
+    .severity-low {
+      color: #00CC00;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Pink Sock Security Analysis</h1>
+    
+    <div class="status">
+      Basic panel is working! This is a simplified version of the extension's DevTools panel.
+    </div>
+    
+    <div class="info-box">
+      <strong>Extension Status:</strong> The DevTools panel is now functional in basic mode.
+      <p>This panel is currently in simplified mode to help debug issues with the full version.</p>
+    </div>
+    
+    <button id="scan-button">Scan Current Page</button>
+    
+    <h2>Sample Findings</h2>
+    <div id="findings-container">
+      <div class="finding">
+        <div class="finding-title">Missing Sandbox <span class="severity-high">(High)</span></div>
+        <p>Sample finding: Iframe without sandbox attribute detected.</p>
+      </div>
+      
+      <div class="finding">
+        <div class="finding-title">Weak CSP Configuration <span class="severity-medium">(Medium)</span></div>
+        <p>Sample finding: Missing frame-ancestors directive in Content Security Policy.</p>
+      </div>
+    </div>
+  </div>
+  
+  <script>
+    // Simple functionality for the basic panel
+    document.getElementById('scan-button').addEventListener('click', function() {
+      alert('Scan functionality will be restored in the full version.');
+    });
+    
+    // Log that the panel has loaded successfully
+    console.log('Pink Sock basic panel loaded successfully');
+  </script>
+</body>
+</html>
